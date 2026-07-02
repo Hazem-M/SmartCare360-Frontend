@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Smart Care 360</title>
+    
+    <!-- CSS Dependencies -->
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/alert.css" rel="stylesheet">
+    <link href="login.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="../assets/vendor/google-fonts/inter.css" rel="stylesheet">
+</head>
+<body class="login-page">
+
+    <div class="login-container">
+        <!-- Left Side: Visual Content -->
+        <div class="login-visual reveal-left">
+            <div class="visual-overlay"></div>
+            <div class="visual-content">
+                <div class="brand-logo mb-4 d-flex align-items-center gap-2">
+                    <img src="../assets/img/logo.png" alt="Smart Care 360 Logo" style="height: 55px; width: auto; object-fit: contain;">
+                    <span>Smart Care 360</span>
+                </div>
+                <h2 class="display-5 fw-bold mb-4" data-lang="login_visual_title">Advanced Medical Intelligence</h2>
+                <p class="lead mb-5" data-lang="login_visual_subtitle">Empowering healthcare with state-of-the-art AI diagnostics and seamless patient-doctor connectivity.</p>
+                
+            </div>
+            
+            <!-- Rotating Background Shapes -->
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+
+        <!-- Right Side: Login Form -->
+        <div class="login-form-side reveal-right">
+            <div class="form-wrapper glass-card">
+                <div class="form-header mb-5 text-center">
+                    <h1 class="h3 fw-bold mb-2" data-lang="login_title">Welcome Back</h1>
+                    <p class="text-muted" data-lang="login_subtitle_form">Enter your credentials to access your secure health portal</p>
+                </div>
+
+                <form id="loginForm" class="needs-validation" novalidate>
+                    <!-- Role Selector -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold" data-lang="select_role">Access Level</label>
+                        <div class="role-selector gap-3">
+                            <input type="radio" name="role" id="role-patient" value="patient" checked>
+                            <label for="role-patient" class="role-card">
+                                <i class="bi bi-person"></i>
+                                <span data-lang="role_patient">Patient</span>
+                            </label>
+
+                            <input type="radio" name="role" id="role-doctor" value="doctor">
+                            <label for="role-doctor" class="role-card">
+                                <i class="bi bi-person-badge"></i>
+                                <span data-lang="role_doctor">Doctor</span>
+                            </label>
+
+                            <input type="radio" name="role" id="role-admin" value="admin">
+                            <label for="role-admin" class="role-card">
+                                <i class="bi bi-shield-lock"></i>
+                                <span data-lang="role_admin">Admin</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold" id="emailLabel" data-lang="email_label">Username</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person" id="emailIconPerson"></i>
+                                <i class="bi bi-person-badge d-none" id="emailIconDoctor"></i>
+                                <i class="bi bi-shield-lock d-none" id="emailIconAdmin"></i>
+                            </span>
+                            <input type="text" class="form-control" id="email" placeholder="username or admin" required>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label for="password" class="form-label fw-semibold mb-0" data-lang="password_label">Password</label>
+                            <a href="../forgot-password/forgot-password.html" class="small text-primary text-decoration-none" data-lang="forgot_pass">Forgot password?</a>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input type="password" class="form-control" id="password" placeholder="********" required>
+                            <button class="btn btn-outline-secondary border-start-0" type="button" id="togglePassword">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold mb-4 shadow-lg" id="submitBtn">
+                        <span class="btn-text" data-lang="login_btn">Sign In</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
+
+                    <!-- Language & Actions -->
+                    <div class="text-center">
+                        <p class="mb-4">
+                            <span data-lang="no_account">Don't have an account?</span>
+                            <a href="../register/register.html" class="fw-bold text-primary text-decoration-none" data-lang="register_link">Create Account</a>
+                        </p>
+                        
+                        <div class="d-flex justify-content-center gap-3 align-items-center pt-3 border-top">
+                            <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2 px-3 lang-toggle-btn" onclick="toggleLanguageManual()">
+                                <i class="bi bi-globe"></i>
+                                <span id="langText">العربية</span>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center p-2 rounded-circle dark-mode-toggle" onclick="toggleDarkMode()">
+                                <i class="bi bi-moon-stars" id="modeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="mt-5 text-center">
+                    <a href="../home/home.html" class="text-muted small text-decoration-none">
+                        <i class="bi bi-arrow-left me-1"></i> <span data-lang="back_home">Back to Homepage</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Dependencies -->
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../shared/lang.js"></script>
+    <script src="../shared/alert.js"></script>
+    <script src="../shared/api.js"></script>
+    <script src="login.js"></script>
+    <script src="../shared/dark-mode.js"></script>
+</body>
+</html>
+
+
+

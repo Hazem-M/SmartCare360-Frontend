@@ -1,0 +1,794 @@
+/* ═══════════════════════════════════════
+   DIAGNOSIS PAGE — Premium Styles
+   ═══════════════════════════════════════ */
+
+/* --- Page Header (handled by theme.css) --- */
+.page-header {
+    border-radius: 0 0 3rem 3rem;
+}
+
+.header-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.header-shape.shape-1 {
+    width: 300px;
+    height: 300px;
+    background: var(--secondary);
+    top: -100px;
+    inset-inline-start: -50px;
+}
+
+.header-shape.shape-2 {
+    width: 200px;
+    height: 200px;
+    background: #2A7A45;
+    bottom: -50px;
+    inset-inline-end: -20px;
+}
+
+/* --- Drag & Drop Zone --- */
+.upload-dropzone {
+    border: 3px dashed var(--input-border);
+    background: rgba(var(--primary-rgb), 0.02);
+    border-radius: 2rem;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.upload-dropzone:hover {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.05);
+    transform: scale(1.02);
+}
+
+.upload-dropzone.dragover {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.1);
+    border-style: solid;
+}
+
+.pulse-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0 auto;
+    animation: iconPulse 2s infinite ease-in-out;
+}
+
+@keyframes iconPulse {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0.4); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 20px rgba(var(--primary-rgb), 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(var(--primary-rgb), 0); }
+}
+
+/* Preview Overlay */
+.preview-overlay {
+    position: absolute;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.05);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    backdrop-filter: blur(4px);
+}
+
+.preview-card {
+    max-width: 90%;
+    max-height: 90%;
+    overflow: hidden;
+    position: relative;
+    animation: zoomIn 0.3s ease-out;
+}
+
+#previewMedia img {
+    max-width: 100%;
+    max-height: 180px;
+    display: block;
+    object-fit: contain;
+}
+
+#previewMedia iframe {
+    width: 100%;
+    height: 200px;
+    border: none;
+}
+
+/* --- AI Scanning Animation --- */
+.ai-scanning-box {
+    width: 120px;
+    height: 120px;
+    background: var(--bg-color);
+    border: 3px solid var(--primary);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(var(--primary-rgb), 0.2);
+}
+
+.scan-line {
+    position: absolute;
+    top: -5px;
+    inset-inline-start: 0;
+    width: 100%;
+    height: 5px;
+    background: var(--primary);
+    box-shadow: 0 0 15px var(--primary);
+    z-index: 5;
+    animation: scanLineMove 2s infinite ease-in-out;
+}
+
+@keyframes scanLineMove {
+    0% { top: 10%; }
+    50% { top: 90%; }
+    100% { top: 10%; }
+}
+
+/* --- Confidence Gauge --- */
+.circular-chart {
+    display: block;
+    margin: 10px auto;
+    max-width: 140px;
+    max-height: 140px;
+}
+
+.circle-bg {
+    fill: none;
+    stroke: var(--input-border);
+    stroke-width: 3.8;
+}
+
+.circle {
+    fill: none;
+    stroke: var(--primary);
+    stroke-width: 3.8;
+    stroke-linecap: round;
+    transition: stroke-dasharray 1s ease-out;
+}
+
+.percentage {
+    fill: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 800;
+    text-anchor: middle;
+}
+
+.bg-soft-success { background-color: rgba(40, 167, 69, 0.1); }
+.bg-soft-warning { background-color: rgba(255, 193, 7, 0.1); }
+
+/* Dark Mode Tweaks */
+[data-bs-theme="dark"] .upload-dropzone {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+[data-bs-theme="dark"] .percentage {
+    fill: white;
+}
+
+[data-bs-theme="dark"] .finding-details {
+    background: #152350 !important;
+}
+
+[data-bs-theme="dark"] .result-gauge-box,
+[data-bs-theme="dark"] .medical-explanation-box {
+    background: #152350 !important;
+}
+
+/* --- Scan Type Cards --- */
+.scan-type-card {
+    border: 2px solid var(--input-border);
+    opacity: 0.8;
+}
+.scan-type-card:hover {
+    border-color: rgba(var(--primary-rgb), 0.5);
+    opacity: 1;
+    transform: translateY(-2px);
+}
+.scan-type-card.border-primary {
+    opacity: 1;
+    border-width: 2px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.custom-transition {
+    transition: all 0.2s ease-in-out;
+}
+
+[data-bs-theme="dark"] .scan-type-card {
+    background: var(--card-bg) !important;
+    border-color: var(--input-border);
+}
+[data-bs-theme="dark"] .scan-type-card.border-primary {
+    border-color: var(--primary);
+    background: rgba(var(--primary-rgb), 0.15) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROFESSIONAL MEDICAL REPORT PRINT DESIGN SYSTEM
+   Bilingual Support: Arabic (Cairo) & English (Inter)
+   Color Palette: Deep Emerald Green (#115e59) & Soft Tints
+   ═══════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+#medicalPrintReport {
+    font-family: 'Inter', 'Cairo', 'Segoe UI', sans-serif;
+    color: #212529;
+    background: #fff;
+    direction: inherit; /* Inherits LTR/RTL from html */
+}
+
+/* ── Professional Letterhead ── */
+.rpt-letterhead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    box-sizing: border-box;
+}
+.rpt-letterhead-compact {
+    padding-bottom: 8px;
+}
+.rpt-lh-left, .rpt-lh-right {
+    display: flex;
+    flex-direction: column;
+}
+.rpt-lh-right {
+    align-items: flex-end;
+}
+.rpt-logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.rpt-logo-circle {
+    width: 44px;
+    height: 44px;
+    background: #115e59;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(17, 94, 89, 0.15);
+}
+.rpt-logo-sm {
+    width: 32px;
+    height: 32px;
+}
+.rpt-brand {
+    font-size: 20px;
+    font-weight: 800;
+    color: #115e59;
+    line-height: 1.1;
+}
+.rpt-brand-sm {
+    font-size: 15px;
+}
+.rpt-dept {
+    font-size: 11px;
+    color: #4b5563;
+    font-weight: 600;
+    margin-top: 2px;
+}
+.rpt-report-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #115e59;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    text-align: end;
+}
+.rpt-meta-info {
+    font-size: 11px;
+    color: #4b5563;
+    line-height: 1.5;
+    text-align: end;
+}
+.rpt-meta-info strong {
+    color: #115e59;
+    font-weight: 700;
+}
+.rpt-letterhead-bar {
+    height: 3px;
+    background: linear-gradient(90deg, #115e59 0%, #2dd4bf 100%);
+    margin-bottom: 18px;
+    border-radius: 2px;
+}
+.rpt-letterhead-bar-compact {
+    margin-bottom: 12px;
+}
+
+/* ── Section Title ── */
+.rpt-section-title {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: #115e59;
+    border-inline-start: 4px solid #115e59;
+    padding: 2px 8px;
+    margin-bottom: 12px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* ── Patient Details Table ── */
+.rpt-patient-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 1.5px solid #b2f5ea;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.rpt-patient-table td {
+    padding: 10px 15px;
+    border: 1px solid #e6fffa;
+    background: #fcfdfd;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+.rpt-field-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #0f766e;
+    margin-bottom: 4px;
+    display: block;
+}
+.rpt-field-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1f2937;
+    word-break: break-word;
+}
+
+/* ── Findings Table ── */
+.rpt-findings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border: 1.5px solid #b2f5ea;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.rpt-scan-image-cell {
+    background: #f0fdfa;
+    border-inline-end: 1.5px solid #b2f5ea;
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+}
+.rpt-scan-img {
+    max-height: 250px;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+    border: 1px solid #ccfbf1;
+    display: block;
+    margin: 0 auto;
+}
+.rpt-findings-text-cell {
+    padding: 20px;
+    vertical-align: top;
+    background: #fff;
+}
+.rpt-detection-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+.rpt-detection-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #115e59;
+    margin-bottom: 6px;
+    line-height: 1.25;
+}
+.rpt-detection-desc {
+    font-size: 11.5px;
+    color: #4b5563;
+    line-height: 1.6;
+    text-align: justify;
+    margin-bottom: 12px;
+}
+
+/* ── Stat Boxes ── */
+.rpt-findings-stats {
+    display: flex;
+    gap: 12px;
+    border-top: 1px dashed #e6fffa;
+    padding-top: 12px;
+}
+.rpt-stat-box {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+.rpt-stat-green {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+.rpt-stat-red {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+}
+.rpt-stat-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #4b5563;
+    margin-bottom: 3px;
+}
+.rpt-stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    color: #166534;
+}
+.rpt-stat-value-sm {
+    font-size: 12px;
+    font-weight: 700;
+    color: #991b1b;
+}
+
+/* ── Detailed Technical Analysis (Page 2) ── */
+.rpt-details-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+}
+.rpt-details-text {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box;
+}
+.rpt-tech-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+}
+.rpt-tech-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 8px 12px;
+    background: #f9fafb;
+    box-sizing: border-box;
+}
+.rpt-span-2 {
+    grid-column: span 2;
+}
+.rpt-tech-label {
+    font-size: 9px;
+    color: #6b7280;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 3px;
+}
+.rpt-tech-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1f2937;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.rpt-severity-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.rpt-tech-section {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: #fff;
+    box-sizing: border-box;
+}
+.rpt-tech-section-title {
+    font-size: 10.5px;
+    color: #4b5563;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+}
+.rpt-tech-section-text {
+    font-size: 11.5px;
+    color: #374151;
+    line-height: 1.6;
+    margin: 0;
+    text-align: justify;
+}
+.rpt-treatment-section {
+    border-color: #a7f3d0;
+    background: #f0fdf4;
+}
+.rpt-treatment-section .rpt-tech-section-title {
+    border-bottom-color: #d1fae5;
+}
+.text-success-dark {
+    color: #065f46;
+}
+
+/* Heatmap visualization card */
+.rpt-details-heatmap {
+    width: 40%;
+    box-sizing: border-box;
+}
+.rpt-heatmap-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px;
+    background: #fff;
+    width: 100%;
+    box-sizing: border-box;
+}
+.rpt-heatmap-label {
+    font-size: 9.5px;
+    color: #4b5563;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
+    text-align: center;
+}
+.rpt-heatmap-img-frame {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #000;
+    padding: 4px;
+    box-sizing: border-box;
+}
+.rpt-heatmap-img-frame img {
+    max-width: 100%;
+    max-height: 310px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ── Footer & Signatures ── */
+.rpt-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 2px solid #115e59;
+    margin-top: 12px;
+    box-sizing: border-box;
+}
+.rpt-sig-block {
+    flex: 1;
+    text-align: center;
+    padding: 0 15px;
+}
+.rpt-sig-line {
+    height: 1px;
+    background: #4b5563;
+    margin-bottom: 6px;
+}
+.rpt-sig-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: #4b5563;
+}
+.rpt-footer-stamp {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 0 12px;
+}
+.rpt-stamp-circle {
+    width: 44px;
+    height: 44px;
+    border: 2px solid #115e59;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #115e59;
+    font-weight: 800;
+}
+.rpt-stamp-text {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #115e59;
+}
+
+/* ── Disclaimer ── */
+.rpt-disclaimer {
+    text-align: center;
+    font-size: 8.5px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-top: 10px;
+    padding: 6px 12px;
+    background: #f9fafb;
+    border-radius: 4px;
+    border: 1px solid #e5e7eb;
+}
+
+/* ── Page Number ── */
+.rpt-page-num {
+    text-align: center;
+    font-size: 9px;
+    color: #9ca3af;
+    margin-top: 6px;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/* PRINT MEDIA QUERY — Show only the report, 2 exact A4 pages */
+/* ─────────────────────────────────────────────────────────── */
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 12mm 15mm;
+    }
+
+    /* Hide everything except the print container */
+    body > *:not(#medicalPrintReport) {
+        display: none !important;
+    }
+
+    #medicalPrintReport {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .print-page {
+        page-break-after: always !important;
+        break-after: page !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        height: 271mm !important; /* Calibrated height to fit perfectly */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        padding: 0 !important;
+        position: relative !important;
+        background-color: #fff !important;
+    }
+
+    .print-page:last-child {
+        page-break-after: avoid !important;
+        break-after: avoid !important;
+    }
+
+    /* Force color accuracy for all report elements */
+    .rpt-logo-circle,
+    .rpt-letterhead-bar,
+    .rpt-section-title,
+    .rpt-patient-table td,
+    .rpt-field-label,
+    .rpt-findings-table,
+    .rpt-scan-image-cell,
+    .rpt-stat-box,
+    .rpt-tech-box,
+    .rpt-tech-section,
+    .rpt-treatment-section,
+    .rpt-heatmap-card,
+    .rpt-heatmap-img-frame,
+    .rpt-footer,
+    .rpt-stamp-circle,
+    .rpt-stamp-text,
+    .rpt-disclaimer {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Ensure images print correctly */
+    #medicalPrintReport img {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Hide non-print elements */
+    .btn, .btn-outline-secondary, .btn-primary,
+    .no-print, #suggestedDoctorsSection,
+    .toast, .modal, .alert {
+        display: none !important;
+    }
+}
+/* --- Premium Report Additions --- */
+.premium-findings-box {
+    transition: all 0.3s ease;
+    border-inline-start: 5px solid var(--primary) !important;
+}
+
+[data-bs-theme="dark"] .premium-findings-box {
+    background: #152350 !important;
+    border-color: var(--primary) !important;
+}
+
+[data-bs-theme="dark"] .detailed-report-card {
+    background: var(--card-bg) !important;
+    border-color: var(--input-border) !important;
+}
+
+[data-bs-theme="dark"] .border-light {
+    border-color: var(--input-border) !important;
+}
+
+[data-bs-theme="dark"] .border-success-subtle {
+    border-color: var(--primary) !important;
+}
+
+#detectedCondition {
+    font-size: 1.75rem;
+    letter-spacing: -0.5px;
+}
+
+[dir="rtl"] #detectedCondition {
+    letter-spacing: 0;
+}
+
+.finding-details {
+    overflow: hidden;
+    position: relative;
+    border: none !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05) !important;
+}
+
+[data-bs-theme="dark"] .finding-details {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3) !important;
+}
+
+#recommendedSpecialist {
+    color: var(--primary);
+    font-weight: 500;
+}
+
+/* Ensure dynamic text alignment */
+#medicalExplanation, #detectedCondition, #recommendedSpecialist {
+    unicode-bidi: plaintext;
+    text-align: start;
+}

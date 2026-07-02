@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Smart Care 360</title>
+    <link id="bootstrap-css" href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/alert.css" rel="stylesheet">
+    <link href="admin-dashboard.css" rel="stylesheet">
+    <link href="../assets/vendor/google-fonts/inter.css" rel="stylesheet">
+    <script src="../shared/dark-mode.js"></script>
+</head>
+<body class="admin-body d-flex flex-column min-vh-100">
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar" id="sidebar">
+            <div class="sidebar-brand-wrapper">
+                <div class="d-flex align-items-center gap-2">
+                    <img src="../assets/img/logo.png" alt="Logo" data-lang="logo_alt" class="sidebar-logo">
+                    <div>
+                        <h5 class="brand-title mb-0 fw-bold text-primary" data-lang="brand_name">Smart Care 360</h5>
+                        <small class="brand-subtitle text-muted" data-lang="sidebar_brand_subtitle">Admin Panel</small>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-nav-link active" data-view="view-overview">
+                    <i class="bi bi-grid-fill"></i>
+                    <span data-lang="nav_overview">Overview</span>
+                </a>
+                <a href="#" class="sidebar-nav-link" data-view="view-patients">
+                    <i class="bi bi-people-fill"></i>
+                    <span data-lang="nav_patients">Patients</span>
+                </a>
+                <a href="#" class="sidebar-nav-link" data-view="view-doctors">
+                    <i class="bi bi-person-badge"></i>
+                    <span data-lang="nav_doctors">Doctors</span>
+                </a>
+                <a href="#" class="sidebar-nav-link" data-view="view-appointments">
+                    <i class="bi bi-calendar-check-fill"></i>
+                    <span data-lang="nav_appointments">Appointments</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer-wrapper mt-auto">
+                <button class="btn logout-sidebar-btn w-100 d-flex align-items-center justify-content-center gap-2" onclick="logoutAdmin()">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span data-lang="nav_logout">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="admin-main">
+            <!-- Topbar -->
+            <header class="admin-topbar">
+                <div class="topbar-left d-flex align-items-center gap-2">
+                    <button class="btn btn-sm d-lg-none border-0 text-dark fs-3 p-1" id="mobileMenuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                    <h4 class="fw-bold mb-0 pine-slate-text" data-lang="page_title">System Overview</h4>
+                </div>
+                <div class="topbar-right d-flex align-items-center gap-3">
+                    <div class="topbar-date small fw-bold text-muted d-none d-md-block">
+                        <i class="bi bi-calendar3 text-primary me-1"></i>
+                        <span id="currentDateDisplay"></span>
+                    </div>
+                    <button class="icon-circle-btn lang-btn border-0 position-relative" onclick="toggleLanguageManual()" title="Language">
+                        <span id="langText" class="fw-bold" style="font-size:0.75rem;">EN</span>
+                    </button>
+                    <button class="icon-circle-btn dark-mode-btn" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+                        <i class="bi bi-moon-stars"></i>
+                    </button>
+                    <div class="admin-profile d-flex align-items-center gap-2">
+                        <div class="avatar-circle bg-primary-subtle text-primary fw-bold rounded-circle d-flex align-items-center justify-content-center" style="width:40px; height:40px; font-size:1.1rem;">
+                            <i class="bi bi-shield-lock-fill"></i>
+                        </div>
+                        <div class="d-none d-md-block">
+                            <div class="fw-bold fs-7" data-lang="admin">Admin</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="admin-content p-4">
+
+                <!-- ═══ OVERVIEW ═══ -->
+                <div id="view-overview" class="admin-view active">
+
+                    <!-- Stats Row -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6 col-xl-4">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="admin-stat-patients">—</h4>
+                                    <span class="small text-muted" data-lang="stat_total_patients">Total Patients</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-info-subtle text-info">
+                                    <i class="bi bi-people-fill text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="admin-stat-doctors">—</h4>
+                                    <span class="small text-muted" data-lang="stat_total_doctors">Registered Doctors</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-primary-subtle text-primary">
+                                    <i class="bi bi-person-badge text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="admin-stat-scans">—</h4>
+                                    <span class="small text-muted" data-lang="stat_total_scans">AI Scans</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-success-subtle text-success">
+                                    <i class="bi bi-activity text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="admin-stat-today-appts">—</h4>
+                                    <span class="small text-muted" data-lang="stat_today_appts">Today's Appointments</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-warning-subtle text-warning">
+                                    <i class="bi bi-calendar-check text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="admin-stat-pending">—</h4>
+                                    <span class="small text-muted" data-lang="stat_pending_verif">Pending Verification</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-danger-subtle text-danger">
+                                    <i class="bi bi-shield-exclamation text-danger"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="admin-stat-month">—</h4>
+                                    <span class="small text-muted" data-lang="stat_month_appts">This Month</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-secondary-subtle text-secondary">
+                                    <i class="bi bi-calendar-range text-secondary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Bar -->
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <button class="btn btn-primary rounded-pill px-4 shadow-sm d-flex align-items-center gap-2" onclick="switchToViewAppointmentsToday()">
+                            <i class="bi bi-calendar-check"></i> <span data-lang="qa_today">Today's Appointments</span>
+                        </button>
+                        <button class="btn btn-outline-primary rounded-pill px-4 shadow-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                            <i class="bi bi-person-plus"></i> <span data-lang="qa_add_doc">Add Doctor</span>
+                        </button>
+                        <button class="btn btn-outline-success rounded-pill px-4 shadow-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addSpecialtyModal">
+                            <i class="bi bi-tag"></i> <span data-lang="qa_add_spec">Add Specialty</span>
+                        </button>
+                        <button class="btn btn-outline-info rounded-pill px-4 shadow-sm d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addPatientModal">
+                            <i class="bi bi-person-plus-fill"></i> <span data-lang="qa_add_pat">Add Patient</span>
+                        </button>
+                        <button class="btn btn-outline-secondary rounded-pill px-4 shadow-sm d-flex align-items-center gap-2" onclick="showQuickReport()">
+                            <i class="bi bi-file-earmark-bar-graph"></i> <span data-lang="qa_report">Quick Report</span>
+                        </button>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-lg-8">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                                <div class="card-header bg-white border-0 p-4 pb-1">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-graph-up text-primary fs-4"></i>
+                                        <span data-lang="chart_growth">Platform Growth</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div style="position: relative; height: 280px; width: 100%;">
+                                        <canvas id="growthChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                                <div class="card-header bg-white border-0 p-4 pb-1">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-activity text-success fs-4"></i>
+                                        <span data-lang="today_activity_title">Today's Activity</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4" id="todayActivityBody">
+                                    <div class="text-center py-4">
+                                        <div class="spinner-border spinner-border-sm text-primary"></div>
+                                        <p class="mt-2 text-muted small" data-lang="loading">Loading...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                                <div class="card-header bg-white border-0 p-4 pb-1">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-layers text-primary fs-4"></i>
+                                        <span data-lang="chart_specialty">Specialty</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4 d-flex align-items-center justify-content-center">
+                                    <div style="position: relative; height: 220px; width: 100%;">
+                                        <canvas id="specChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                                <div class="card-header bg-white border-0 p-4 pb-1">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-gender-ambiguous text-info fs-4"></i>
+                                        <span data-lang="chart_gender">Gender</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4 d-flex align-items-center justify-content-center">
+                                    <div style="position: relative; height: 220px; width: 100%;">
+                                        <canvas id="genderChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                                <div class="card-header bg-white border-0 p-4 pb-1">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-calendar-check text-warning fs-4"></i>
+                                        <span data-lang="chart_status">Status</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4 d-flex align-items-center justify-content-center">
+                                    <div style="position: relative; height: 220px; width: 100%;">
+                                        <canvas id="statusChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                                <div class="card-header bg-white border-0 p-4 pb-1">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-bar-chart-line text-primary fs-4"></i>
+                                        <span data-lang="chart_weekly">Weekly Appointments</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div style="position: relative; height: 240px; width: 100%;">
+                                        <canvas id="weeklyChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="card-header bg-white border-0 p-4 pb-1">
+                            <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                <i class="bi bi-clock-history text-primary fs-4"></i>
+                                <span data-lang="activity_title">Recent System Activity</span>
+                            </h5>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th data-lang="tbl_user">User</th>
+                                            <th data-lang="tbl_action">Action</th>
+                                            <th data-lang="tbl_status">Status</th>
+                                            <th data-lang="tbl_time">Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="activityTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ PATIENTS ═══ -->
+                <div id="view-patients" class="admin-view d-none">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="card-header bg-white border-0 p-4 pb-1">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                                <div>
+                                    <h4 class="mb-0 fw-bold" data-lang="patients_title">Patients Directory</h4>
+                                    <small class="text-muted" id="patients-count-label"></small>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <div class="position-relative" style="width:200px;">
+                                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                        <input type="text" id="patientSearchInput" class="form-control rounded-pill ps-5" placeholder="Search patients..." data-lang="search_patients_placeholder">
+                                    </div>
+                                    <button class="btn btn-outline-primary rounded-pill d-flex align-items-center gap-1" onclick="exportTableCSV('patients')">
+                                        <i class="bi bi-download"></i> <span data-lang="csv_export">CSV</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle" id="patientsTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="sortable" onclick="sortPatients('fullName')"><span data-lang="th_patient_info">Patient Info</span> <i class="bi bi-arrow-down-up"></i></th>
+                                            <th class="sortable" onclick="sortPatients('email')"><span data-lang="th_email">Email</span> <i class="bi bi-arrow-down-up"></i></th>
+                                            <th class="sortable" onclick="sortPatients('createdAt')"><span data-lang="th_registered">Registered</span> <i class="bi bi-arrow-down-up"></i></th>
+                                            <th><span data-lang="th_status">Status</span></th>
+                                            <th><span data-lang="th_actions">Actions</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="patientsTableBody"></tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted" id="patients-pagination-info"></small>
+                                <div class="btn-group btn-group-sm" id="patients-pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ DOCTORS ═══ -->
+                <div id="view-doctors" class="admin-view d-none">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="card-header bg-white border-0 p-4 pb-1">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                                <div>
+                                    <h4 class="mb-0 fw-bold" data-lang="doctors_title">Doctors Verification</h4>
+                                    <small class="text-muted" id="doctors-count-label"></small>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <div class="position-relative" style="width:200px;">
+                                        <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                                        <input type="text" id="doctorSearchInput" class="form-control rounded-pill ps-5" placeholder="Search..." data-lang="search_placeholder">
+                                    </div>
+                                    <select id="doctorSpecialtyFilter" class="form-select rounded-pill" style="width:170px;">
+                                        <option value="" data-lang="spec_all">All Specialties</option>
+                                    </select>
+                                    <button class="btn btn-primary rounded-pill d-flex align-items-center gap-1 shadow-sm" data-bs-toggle="modal" data-bs-target="#addDoctorModal">
+                                        <i class="bi bi-plus-circle"></i> <span data-lang="add_doctor_btn">Add Doctor</span>
+                                    </button>
+                                    <button class="btn btn-outline-primary rounded-pill d-flex align-items-center gap-1" onclick="exportTableCSV('doctors')">
+                                        <i class="bi bi-download"></i> <span data-lang="csv_export">CSV</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle" id="doctorsTable">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th class="sortable" onclick="sortDoctors('name')"><span data-lang="th_doctor_name">Doctor Name</span> <i class="bi bi-arrow-down-up"></i></th>
+                                            <th class="sortable" onclick="sortDoctors('specialty')"><span data-lang="th_specialty">Specialty</span> <i class="bi bi-arrow-down-up"></i></th>
+                                            <th class="sortable" onclick="sortDoctors('address')"><span data-lang="th_clinic_address">Clinic Address</span> <i class="bi bi-arrow-down-up"></i></th>
+                                            <th class="sortable" onclick="sortDoctors('exp')"><span data-lang="th_experience">Experience</span> <i class="bi bi-arrow-down-up"></i></th>
+                                            <th><span data-lang="th_verification">Verification</span></th>
+                                            <th><span data-lang="th_actions">Actions</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="doctorsTableBody"></tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted" id="doctors-pagination-info"></small>
+                                <div class="btn-group btn-group-sm" id="doctors-pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ═══ APPOINTMENTS ═══ -->
+                <div id="view-appointments" class="admin-view d-none">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="card-header bg-white border-0 p-4 pb-1">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                                <div>
+                                    <h4 class="mb-0 fw-bold" data-lang="appointments_title">All Appointments</h4>
+                                    <small class="text-muted" id="appointments-count-label"></small>
+                                </div>
+                                <div class="d-flex align-items-center gap-2 flex-wrap">
+                                    <select id="apptStatusFilter" class="form-select rounded-pill" style="width:170px;">
+                                        <option value="" data-lang="appt_all">All Status</option>
+                                        <option value="Scheduled" data-lang="appt_scheduled">Scheduled</option>
+                                        <option value="Confirmed" data-lang="appt_confirmed">Confirmed</option>
+                                        <option value="Completed" data-lang="appt_completed">Completed</option>
+                                        <option value="Cancelled" data-lang="appt_cancelled">Cancelled</option>
+                                    </select>
+                                    <select id="apptDoctorFilter" class="form-select rounded-pill" style="width:200px;">
+                                        <option value="" data-lang="appt_all_doctors">All Doctors</option>
+                                    </select>
+                                    <button class="btn btn-outline-secondary rounded-pill d-flex align-items-center gap-1" onclick="resetApptFilters()">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th><span data-lang="th_patient">Patient</span></th>
+                                            <th><span data-lang="th_doctor">Doctor</span></th>
+                                            <th><span data-lang="th_specialty">Specialty</span></th>
+                                            <th><span data-lang="th_date">Date</span></th>
+                                            <th><span data-lang="th_time">Time</span></th>
+                                            <th><span data-lang="th_status">Status</span></th>
+                                            <th><span data-lang="th_actions">Actions</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="appointmentsTableBody"></tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted" id="appointments-pagination-info"></small>
+                                <div class="btn-group btn-group-sm" id="appointments-pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Details Modal -->
+    <div class="modal fade" id="patientDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow rounded-4">
+                <div class="modal-header border-0 p-4 pb-0">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-person-lines-fill text-primary me-2"></i> <span data-lang="patient_profile">Patient Profile</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-4 text-center border-end">
+                            <div class="avatar-circle bg-primary-subtle text-primary fw-bold rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:80px;height:80px;font-size:2rem;">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+                            <h5 class="fw-bold mb-1" id="p-detail-name">Patient Name</h5>
+                            <span class="badge bg-light text-dark border px-3 py-1 rounded-pill" id="p-detail-gender-age">Male, 35 Yrs</span>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="bg-light p-3 rounded-3 mb-3 border">
+                                <strong class="text-secondary small">Email:</strong>
+                                <p class="mb-0 text-dark mt-1" id="p-detail-email">email@domain.com</p>
+                            </div>
+                            <div class="bg-light p-3 rounded-3 mb-3 border">
+                                <strong class="text-secondary small">Phone:</strong>
+                                <p class="mb-0 text-dark mt-1" id="p-detail-phone">+123456789</p>
+                            </div>
+                            <div class="bg-light p-3 rounded-3 border">
+                                <strong class="text-secondary small" data-lang="lbl_notes">Medical History:</strong>
+                                <p class="text-dark mb-0 mt-1" id="p-detail-history" style="line-height:1.6;"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-dismiss="modal" data-lang="btn_close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Action Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow rounded-4 text-center p-3">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <i class="bi bi-exclamation-triangle text-warning" style="font-size:3rem;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2" id="confirmTitle">Are you sure?</h5>
+                    <p class="text-muted mb-4" id="confirmMessage">This action cannot be undone.</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" data-lang="btn_cancel">Cancel</button>
+                        <button class="btn btn-danger rounded-pill px-4" id="confirmActionBtn">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Report Modal -->
+    <div class="modal fade" id="quickReportModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <div class="modal-header border-0 p-4 pb-0">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-file-earmark-bar-graph text-primary me-2"></i> <span data-lang="report_title">Quick System Report</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="quickReportBody">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary"></div>
+                        <p class="mt-2 text-muted" data-lang="report_loading">Generating report...</p>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button" class="btn btn-secondary rounded-pill w-100" data-bs-dismiss="modal" data-lang="close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Doctor Modal -->
+    <div class="modal fade" id="addDoctorModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <form id="addDoctorForm" onsubmit="handleRegisterDoctor(event)">
+                    <div class="modal-header border-0 p-4 pb-0">
+                        <h5 class="modal-title fw-bold"><i class="bi bi-person-plus text-primary me-2"></i> <span data-lang="register_doc">Register New Doctor</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="doc_full_name">Doctor Full Name</label>
+                            <input type="text" id="docFormName" class="form-control rounded-3" required placeholder="e.g. د. محمد علي">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="doc_email">Email Address</label>
+                            <input type="email" id="docFormEmail" class="form-control rounded-3" required placeholder="name@mediai.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="doc_password">Password</label>
+                            <input type="password" id="docFormPassword" class="form-control rounded-3" required placeholder="Minimum 6 characters">
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-muted" data-lang="doc_specialty">Specialty</label>
+                                    <select id="docFormSpecialty" class="form-select rounded-3" required>
+                                        <option value="" disabled selected data-lang="ph_select_spec">Select Specialty</option>
+                                    </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-muted" data-lang="doc_exp">Years of Exp.</label>
+                                <input type="number" id="docFormExp" class="form-control rounded-3" min="1" max="50" required value="5">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="doc_clinic_address">Clinic Address</label>
+                            <input type="text" id="docFormAddress" class="form-control rounded-3" placeholder="e.g. 25 Nile Street, Cairo">
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label fw-semibold small text-muted" data-lang="doc_bio">Short Biography</label>
+                            <textarea id="docFormBio" class="form-control rounded-3" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-4 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" data-lang="btn_cancel">Cancel</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm" data-lang="btn_save">Save Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Specialty Modal -->
+    <div class="modal fade" id="addSpecialtyModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <form id="addSpecialtyForm" onsubmit="handleAddSpecialty(event)">
+                    <div class="modal-header border-0 p-4 pb-0">
+                        <h5 class="modal-title fw-bold"><i class="bi bi-tag text-success me-2"></i> <span data-lang="add_specialty_title">Add New Specialty</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="spec_name_en">Specialty Name (English)</label>
+                            <input type="text" id="specFormName" class="form-control rounded-3" required placeholder="e.g. Dermatology">
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label fw-semibold small text-muted" data-lang="spec_name_ar">Specialty Name (Arabic)</label>
+                            <input type="text" id="specFormNameAr" class="form-control rounded-3" required placeholder="مثال: الأمراض الجلدية" dir="rtl">
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-4 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" data-lang="btn_cancel">Cancel</button>
+                        <button type="submit" class="btn btn-success rounded-pill px-4 shadow-sm" data-lang="btn_add">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Patient Modal -->
+    <div class="modal fade" id="addPatientModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <form id="addPatientForm" onsubmit="handleAddPatient(event)">
+                    <div class="modal-header border-0 p-4 pb-0">
+                        <h5 class="modal-title fw-bold"><i class="bi bi-person-plus-fill text-info me-2"></i> <span data-lang="add_patient_title">Register New Patient</span></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="pat_full_name">Full Name</label>
+                            <input type="text" id="patFormName" class="form-control rounded-3" required placeholder="e.g. Ahmed Ali">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="pat_email">Email Address</label>
+                            <input type="email" id="patFormEmail" class="form-control rounded-3" required placeholder="patient@email.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="pat_password">Password</label>
+                            <input type="password" id="patFormPassword" class="form-control rounded-3" required placeholder="Minimum 6 characters">
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-muted" data-lang="pat_age">Age</label>
+                                <input type="number" id="patFormAge" class="form-control rounded-3" min="1" max="150" required value="30">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold small text-muted" data-lang="pat_gender">Gender</label>
+                                <select id="patFormGender" class="form-select rounded-3">
+                                    <option value="Male" data-lang="gender_male">Male</option>
+                                    <option value="Female" data-lang="gender_female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="pat_phone">Phone Number</label>
+                            <input type="text" id="patFormPhone" class="form-control rounded-3" placeholder="e.g. +201234567890">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="pat_medical_history">Medical History</label>
+                            <textarea id="patFormHistory" class="form-control rounded-3" rows="3" placeholder="Any chronic conditions or notes..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-0 p-4 pt-0">
+                        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" data-lang="btn_cancel">Cancel</button>
+                        <button type="submit" class="btn btn-info rounded-pill px-4 shadow-sm" data-lang="btn_save">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Review Modal -->
+    <div class="modal fade" id="doctorReviewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow rounded-4">
+                <div class="modal-header border-0 p-4 pb-0">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-shield-check text-primary me-2"></i> <span data-lang="doc_review_title">Review Doctor</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-5">
+                            <div class="text-center mb-3">
+                                <div class="avatar-circle bg-primary-subtle text-primary fw-bold rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width:64px;height:64px;font-size:1.5rem;">
+                                    <i class="bi bi-person-badge"></i>
+                                </div>
+                                <h5 class="fw-bold mb-1" id="reviewDocName">—</h5>
+                                <span class="badge bg-light text-dark border px-3 py-1 rounded-pill" id="reviewDocSpecialty">—</span>
+                            </div>
+                            <div class="bg-light p-3 rounded-3 mb-2 border">
+                                <small class="text-secondary d-block" data-lang="doc_email">Email</small>
+                                <span id="reviewDocEmail">—</span>
+                            </div>
+                            <div class="bg-light p-3 rounded-3 mb-2 border">
+                                <small class="text-secondary d-block" data-lang="lbl_phone">Phone</small>
+                                <span id="reviewDocPhone">—</span>
+                            </div>
+                            <div class="bg-light p-3 rounded-3 mb-2 border">
+                                <small class="text-secondary d-block" data-lang="lbl_gender">Gender</small>
+                                <span id="reviewDocGender">—</span>
+                            </div>
+                            <div class="bg-light p-3 rounded-3 mb-2 border">
+                                <small class="text-secondary d-block" data-lang="doc_exp">Experience</small>
+                                <span id="reviewDocExp">—</span>
+                            </div>
+                            <div class="bg-light p-3 rounded-3 border">
+                                <small class="text-secondary d-block" data-lang="doc_address">Clinic Address</small>
+                                <span id="reviewDocAddress">—</span>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <label class="form-label fw-semibold small text-muted" data-lang="doc_id_card">ID Card</label>
+                            <div id="reviewIdCardContainer" class="bg-light rounded-3 border d-flex align-items-center justify-content-center" style="min-height:200px;">
+                                <span class="text-muted" data-lang="no_id_card">No ID card uploaded.</span>
+                            </div>
+                            <div class="bg-light p-3 rounded-3 mt-3 border">
+                                <small class="text-secondary d-block" data-lang="doc_bio">Bio</small>
+                                <p class="mb-0 mt-1" id="reviewDocBio">—</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="rejectionSection" class="mt-3">
+                        <label class="form-label fw-semibold small text-muted" data-lang="rejection_reason">Rejection Reason</label>
+                        <textarea id="rejectionReasonInput" class="form-control rounded-3" rows="2" placeholder="Enter reason for rejection..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0 d-flex justify-content-between">
+                    <div>
+                        <button class="btn btn-danger rounded-pill px-4" id="rejectDoctorBtn" onclick="rejectDoctor()" data-lang="btn_reject">Reject</button>
+                    </div>
+                    <button class="btn btn-success rounded-pill px-4 shadow-sm" id="approveDoctorBtn" onclick="approveDoctor()" data-lang="btn_approve">Approve</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../shared/lang.js"></script>
+    <script src="../shared/alert.js"></script>
+    <script src="../shared/api.js"></script>
+    <script src="../assets/vendor/chartjs/chart.min.js"></script>
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>

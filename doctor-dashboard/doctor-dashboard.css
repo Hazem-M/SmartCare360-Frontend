@@ -1,0 +1,601 @@
+/* Premium Styles for Clinic CRM Doctor Dashboard */
+
+:root {
+    --sidebar-bg: #eef2f6;
+    --sidebar-border: #e2e8f0;
+    --sidebar-profile-bg: #e2f5ee;
+    --sidebar-profile-text: #047857;
+    --sidebar-active-bg: #059669;
+    --sidebar-active-text: #ffffff;
+    --topbar-bg: #ffffff;
+    --content-bg: #f8fafc;
+    --card-shadow: 0 4px 12px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.06);
+    --card-radius: 16px;
+    --c-primary: #059669;
+    --c-primary-light: #e2f5ee;
+    --c-success: #10b981;
+    --c-success-light: #ecfdf5;
+    --c-warning: #f59e0b;
+    --c-warning-light: #fffbeb;
+    --c-danger: #ef4444;
+    --c-danger-light: #fef2f2;
+}
+
+/* Dark Mode Overrides */
+body.dark-mode {
+    --sidebar-bg: #05231a;
+    --sidebar-border: #0d3c2c;
+    --sidebar-profile-bg: #093d2c;
+    --sidebar-profile-text: #34d399;
+    --sidebar-active-bg: #34d399;
+    --sidebar-active-text: #05231a;
+    --topbar-bg: #05281d;
+    --content-bg: #02140f;
+    --c-primary: #34d399;
+    --c-primary-light: rgba(52, 211, 153, 0.15);
+}
+
+body {
+    background-color: var(--content-bg);
+    transition: background-color 0.3s ease;
+}
+
+/* Layout Wrapper */
+.doctor-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Sidebar Styling */
+.doctor-sidebar {
+    width: 280px;
+    background-color: var(--sidebar-bg);
+    border-inline-end: 1px solid var(--sidebar-border);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    z-index: 100;
+    transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.sidebar-brand-wrapper {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--sidebar-border);
+}
+
+.sidebar-logo {
+    height: 52px;
+    width: auto;
+    object-fit: contain;
+}
+
+.brand-title {
+    font-size: 1.15rem;
+    letter-spacing: -0.5px;
+}
+
+.brand-subtitle {
+    font-size: 0.72rem;
+    display: block;
+}
+
+/* Doctor Profile Card in Sidebar */
+.doctor-profile-card {
+    background-color: var(--sidebar-profile-bg);
+    border-radius: 12px;
+    padding: 12px;
+    margin: 1.5rem 0;
+    transition: background-color 0.3s ease;
+}
+
+.avatar-circle-wrapper {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.avatar-initials {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--sidebar-active-bg);
+    color: var(--sidebar-active-text);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    background-color: #10b981;
+    border: 2px solid var(--sidebar-profile-bg);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+[dir="rtl"] .status-indicator {
+    left: 0;
+    right: auto;
+}
+
+.profile-name {
+    color: var(--text-primary);
+    font-size: 0.92rem;
+}
+
+.profile-role {
+    font-size: 0.78rem;
+    display: block;
+}
+
+/* Navigation Menu */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.05);
+    border-radius: 4px;
+}
+
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 500;
+    font-size: 0.92rem;
+    transition: all 0.2s ease;
+}
+
+.sidebar-nav-link i {
+    font-size: 1.15rem;
+    color: inherit !important;
+}
+
+.sidebar-nav-link:hover {
+    background-color: rgba(5, 150, 105, 0.05);
+    color: var(--primary);
+}
+
+body.dark-mode .sidebar-nav-link:hover {
+    background-color: rgba(52, 211, 153, 0.08);
+}
+
+.sidebar-nav-link.active {
+    background-color: var(--sidebar-active-bg);
+    color: var(--sidebar-active-text) !important;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.15);
+}
+
+body.dark-mode .sidebar-nav-link.active {
+    box-shadow: 0 4px 12px rgba(52, 211, 153, 0.15);
+}
+
+.logout-sidebar-btn {
+    border: 1px solid var(--sidebar-border);
+    background-color: var(--topbar-bg);
+    color: var(--text-secondary);
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: all 0.2s ease;
+}
+
+.logout-sidebar-btn:hover {
+    background-color: var(--c-danger-light);
+    color: var(--c-danger);
+    border-color: var(--c-danger);
+}
+
+/* Main Content Area */
+.doctor-main {
+    flex-grow: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Topbar Styling */
+.doctor-topbar {
+    height: 70px;
+    background-color: var(--topbar-bg);
+    border-bottom: 1px solid var(--sidebar-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 99;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.topbar-search-wrapper {
+    width: 320px;
+}
+
+.topbar-search-wrapper .search-icon {
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+[dir="rtl"] .topbar-search-wrapper .search-icon {
+    right: 14px;
+    left: auto;
+}
+
+.topbar-search {
+    border-radius: 30px;
+    padding-inline-start: 38px;
+    height: 40px;
+    background-color: #f1f5f9;
+    border: 1px solid transparent;
+}
+
+body.dark-mode .topbar-search {
+    background-color: var(--surface-2);
+}
+
+.topbar-search:focus {
+    background-color: var(--topbar-bg);
+}
+
+.branch-btn {
+    background-color: var(--topbar-bg);
+    border: 1px solid var(--sidebar-border);
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+}
+
+.icon-circle-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--topbar-bg);
+    border: 1px solid var(--sidebar-border);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.icon-circle-btn:hover {
+    background-color: var(--c-primary-light);
+    color: var(--primary);
+    transform: scale(1.05);
+}
+
+.icon-circle-btn i {
+    font-size: 1.1rem;
+    color: inherit !important;
+}
+
+/* Content Container */
+.doctor-content {
+    padding: 2rem;
+    flex-grow: 1;
+}
+
+/* Metrics Cards */
+.metric-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: var(--card-radius);
+    border: 1px solid var(--sidebar-border) !important;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
+}
+
+.metric-icon-wrapper {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+}
+
+.metric-icon-wrapper i {
+    color: inherit !important;
+}
+
+/* Today's appointments container */
+.appointments-container {
+    max-height: 520px;
+    overflow-y: auto;
+}
+
+.appointments-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.appointments-container::-webkit-scrollbar-thumb {
+    background: var(--sidebar-border);
+    border-radius: 10px;
+}
+
+/* Appointment Row */
+.list-group-item {
+    border-radius: 12px !important;
+    margin-bottom: 0.8rem;
+    border: 1px solid var(--sidebar-border) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+    transition: all 0.2s ease;
+}
+
+.list-group-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+
+/* Soft status badge styles */
+.badge-pill-custom {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.bg-primary-subtle { background-color: var(--c-primary-light) !important; color: var(--c-primary) !important; }
+.bg-success-subtle { background-color: var(--c-success-light) !important; color: var(--c-success) !important; }
+.bg-info-subtle { background-color: var(--c-primary-light) !important; color: var(--c-primary) !important; }
+.bg-warning-subtle { background-color: var(--c-warning-light) !important; color: var(--c-warning) !important; }
+.bg-danger-subtle { background-color: var(--c-danger-light) !important; color: var(--c-danger) !important; }
+
+/* Soft background badges for tables */
+.bg-soft-warning { background-color: var(--c-warning-light) !important; color: var(--c-warning) !important; }
+.bg-soft-danger { background-color: var(--c-danger-light) !important; color: var(--c-danger) !important; }
+.bg-soft-success { background-color: var(--c-success-light) !important; color: var(--c-success) !important; }
+
+/* Calendar Widget */
+.mini-calendar {
+    font-size: 0.82rem;
+}
+
+.calendar-grid-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+}
+
+.calendar-cell-header {
+    padding: 6px 0;
+}
+
+.calendar-grid-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    gap: 4px;
+}
+
+.calendar-cell {
+    padding: 6px 0;
+    border-radius: 50%;
+    color: var(--text-primary);
+    font-weight: 500;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+}
+
+.calendar-cell.today-highlight {
+    background-color: var(--primary) !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    box-shadow: 0 2px 8px var(--primary-glow);
+}
+
+/* Quick Actions Button Widget */
+.quick-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 6px;
+    background-color: var(--topbar-bg);
+    border: 1px solid var(--sidebar-border);
+    border-radius: 12px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    text-align: center;
+    height: 82px;
+}
+
+.quick-action-btn i {
+    font-size: 1.45rem;
+    margin-bottom: 6px;
+}
+
+.quick-action-btn span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    display: block;
+    line-height: 1.2;
+}
+
+.quick-action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Responsive sidebar */
+@media (max-width: 991.98px) {
+    .doctor-sidebar {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        height: 100vh;
+    }
+    
+    [dir="rtl"] .doctor-sidebar {
+        right: 0;
+        left: auto;
+        transform: translateX(100%);
+    }
+    
+    .doctor-sidebar.show {
+        transform: translateX(0);
+    }
+    
+    .topbar-search-wrapper {
+        width: 180px;
+    }
+}
+
+.pine-slate-text {
+    color: var(--text-primary);
+}
+
+/* Force override Bootstrap blue colors to emerald green */
+.text-primary, 
+.text-primary-hover:hover,
+a.text-primary:hover,
+a.text-primary:focus {
+    color: #059669 !important;
+}
+
+.btn-link {
+    color: #059669 !important;
+}
+
+.btn-link:hover {
+    color: #047857 !important;
+}
+
+.bi-search {
+    color: #059669 !important;
+}
+
+/* Chat Styles */
+#chatBox {
+    background: #f8f9fa;
+    scroll-behavior: smooth;
+}
+
+#chatBox::-webkit-scrollbar {
+    width: 6px;
+}
+#chatBox::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 10px;
+}
+
+.message-bubble {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+html[dir="ltr"] .chat-message.sent .message-bubble {
+    border-top-right-radius: 4px !important;
+}
+
+html[dir="ltr"] .chat-message.received .message-bubble {
+    border-top-left-radius: 4px !important;
+}
+
+html[dir="rtl"] .chat-message.sent .message-bubble {
+    border-top-left-radius: 4px !important;
+}
+
+html[dir="rtl"] .chat-message.received .message-bubble {
+    border-top-right-radius: 4px !important;
+}
+
+.typing-indicator span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #adb5bd;
+    border-radius: 50%;
+    margin-right: 3px;
+    animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(1) { animation-delay: 0s; }
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.5); opacity: 1; }
+}
+
+/* Dark Mode support for chat */
+body.dark-mode #chatBox {
+    background: #01140f !important;
+}
+body.dark-mode .card-header, body.dark-mode .card-footer {
+    background-color: #05281d !important;
+    border-color: #0d3c2c !important;
+}
+body.dark-mode .border-end {
+    border-color: #0d3c2c !important;
+}
+body.dark-mode .border-top {
+    border-color: #0d3c2c !important;
+}
+body.dark-mode .message-bubble.bg-white {
+    background-color: #05231a !important;
+    border-color: #0d3c2c !important;
+    color: #eef2f6 !important;
+}
+body.dark-mode .list-group-item {
+    background-color: transparent !important;
+    color: #eef2f6 !important;
+    border-color: #0d3c2c !important;
+}
+body.dark-mode .list-group-item.bg-light {
+    background-color: #093d2c !important;
+    color: #eef2f6 !important;
+}
+body.dark-mode .list-group-item:hover {
+    background-color: rgba(52, 211, 153, 0.08) !important;
+}

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Doctors | Smart Care 360</title>
+    
+    <!-- CSS Dependencies -->
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/alert.css" rel="stylesheet">
+    <link href="doctors.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="../assets/vendor/google-fonts/inter.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navbar Container -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Page Header -->
+    <header class="page-header py-5 mb-0 text-white">
+        <div class="container py-4 text-center">
+            <span class="badge rounded-pill bg-white text-primary mb-3 shadow-sm px-3 py-2 fw-bold" data-lang="doc_badge">Medical Network</span>
+            <h1 class="display-5 fw-bold mb-3" data-lang="doc_title">Find a Specialist</h1>
+            <p class="lead opacity-75 mx-auto" style="max-width: 600px;" data-lang="doc_subtitle">Connect with verified medical professionals across various specialties and book your consultation instantly.</p>
+        </div>
+        
+        <div class="header-shape shape-1"></div>
+        <div class="header-shape shape-2"></div>
+    </header>
+
+    <!-- Search & Filter Bar -->
+    <section class="filter-section py-4 sticky-top-custom">
+        <div class="container">
+            <div class="search-filter-box glass-card p-3 shadow-lg">
+                <div class="row g-3">
+                    <div class="col-lg-7">
+                        <div class="search-input-group">
+                            <i class="bi bi-search"></i>
+                            <input type="text" class="form-control border-0 bg-transparent" id="docSearch" placeholder="Search by doctor name or specialty..." data-lang="ph_search_doc">
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="d-flex gap-2">
+                            <div class="flex-grow-1">
+                                <select class="form-select border-0 bg-light rounded-pill px-4" id="specFilter">
+                                    <option value="all" data-lang="spec_all">All Specialties</option>
+                                    <option value="Pneumonia" data-lang="spec_cardio">Cardiologist</option>
+                                    <option value="Orthopedics" data-lang="spec_ortho">Orthopedist</option>
+
+                                    <option value="Neurology" data-lang="spec_neuro">Neurologist</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary rounded-pill px-4 fw-bold" id="filterBtn">
+                                <i class="bi bi-funnel-fill me-2"></i><span data-lang="filter">تصفية</span>
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container py-5">
+        <!-- Results Info -->
+        <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+            <div class="text-secondary small">
+                <span id="resultsCount">0</span> <span data-lang="docs_found">specialists found</span>
+            </div>
+            <div class="sort-options d-flex align-items-center gap-2">
+                <span class="small text-muted" data-lang="sort_by">Sort by:</span>
+                <select class="form-select form-select-sm border-0 bg-transparent fw-bold ps-4" style="min-width: 140px;">
+                    <option value="rating" data-lang="top_rated">Top Rated</option>
+                    <option value="exp" data-lang="most_exp">Experience</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Doctors Grid -->
+        <div id="loadingDoctors" class="text-center py-5">
+            <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;"></div>
+            <p class="text-muted" data-lang="loading_docs">Finding best specialists for you...</p>
+        </div>
+
+        <div class="row g-4" id="doctorsGrid">
+            <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- No Results -->
+        <div id="noResults" class="text-center py-5 d-none">
+            <i class="bi bi-person-x display-1 text-muted mb-4"></i>
+            <h3 class="fw-bold" data-lang="no_docs_title">No Doctors Found</h3>
+            <p class="text-muted" data-lang="no_docs_sub">Try adjusting your search filters or specialty.</p>
+        </div>
+    </main>
+
+    <!-- Footer Container -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JS Dependencies -->
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../shared/lang.js"></script>
+    <script src="../shared/alert.js"></script>
+    <script src="../shared/api.js"></script>
+    <script src="doctors.js"></script>
+    <script src="../shared/dark-mode.js"></script>
+    <script src="../shared/footer.js"></script>
+    <script src="../shared/navbar.js"></script>
+</body>
+</html>
+
+

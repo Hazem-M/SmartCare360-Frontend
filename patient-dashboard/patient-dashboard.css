@@ -1,0 +1,448 @@
+/* ═══════════════════════════════════════
+   PATIENT DASHBOARD — Premium Design
+   ═══════════════════════════════════════ */
+
+/* --- Page Header --- */
+.page-header {
+    border-radius: 0 0 3rem 3rem;
+}
+
+.header-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.2;
+    z-index: 1;
+}
+.header-shape.shape-1 { width: 300px; height: 300px; background: var(--secondary); top: -100px; inset-inline-start: -50px; }
+.header-shape.shape-2 { width: 200px; height: 200px; background: #2A7A45; bottom: -50px; inset-inline-end: -20px; }
+
+/* --- Stats Cards --- */
+.stats-card {
+    transition: all 0.3s ease;
+    border: 1px solid var(--input-border);
+}
+.stats-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.07) !important;
+}
+.star-btn {
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+.star-btn:hover {
+    transform: scale(1.2);
+}
+.stats-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+/* ═══════════════════════════════════════
+   APPOINTMENT CARD — Core
+   ═══════════════════════════════════════ */
+
+.appt-item-card {
+    border: 1px solid var(--input-border);
+    transition: all 0.3s ease;
+    position: relative;
+}
+.appt-item-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px var(--primary-glow) !important;
+}
+
+/* Top color strip */
+.appt-card-strip {
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 0;
+}
+.appt-card-strip.appt-card-past {
+    background: linear-gradient(90deg, #94a3b8, #cbd5e1);
+}
+.appt-card-strip.appt-card-cancelled {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+}
+
+/* Doctor Avatar */
+.appt-doc-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: white;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    box-shadow: 0 4px 12px var(--primary-glow);
+}
+.avatar-confirmed  { background: linear-gradient(135deg, #059669, #10b981) !important; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.25) !important; }
+.avatar-pending    { background: linear-gradient(135deg, #d97706, #f59e0b) !important; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25) !important; }
+.avatar-completed  { background: linear-gradient(135deg, #64748b, #94a3b8) !important; box-shadow: 0 4px 12px rgba(100, 116, 139, 0.2) !important; }
+.avatar-cancelled  { background: linear-gradient(135deg, #ef4444, #f87171) !important; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2) !important; }
+
+/* ═══════════════════════════════════════
+   STATUS BADGES
+   ═══════════════════════════════════════ */
+
+.badge-status-confirmed {
+    background: rgba(5, 150, 105, 0.12);
+    color: #059669;
+    border: 1px solid rgba(5, 150, 105, 0.25);
+    padding: 0.3em 0.75em;
+    border-radius: 999px;
+    font-weight: 700;
+}
+.badge-status-pending {
+    background: rgba(217, 119, 6, 0.12);
+    color: #d97706;
+    border: 1px solid rgba(217, 119, 6, 0.25);
+    padding: 0.3em 0.75em;
+    border-radius: 999px;
+    font-weight: 700;
+}
+.badge-status-scheduled {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--primary-glow);
+    padding: 0.3em 0.75em;
+    border-radius: 999px;
+    font-weight: 700;
+}
+.badge-status-completed {
+    background: rgba(100, 116, 139, 0.10);
+    color: #64748b;
+    border: 1px solid rgba(100, 116, 139, 0.2);
+    padding: 0.3em 0.75em;
+    border-radius: 999px;
+    font-weight: 700;
+}
+.badge-status-cancelled {
+    background: rgba(239, 68, 68, 0.10);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 0.3em 0.75em;
+    border-radius: 999px;
+    font-weight: 700;
+}
+.badge-status-upcoming {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--primary-glow);
+    padding: 0.3em 0.75em;
+    border-radius: 999px;
+    font-weight: 700;
+}
+.badge-queue {
+    background: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    padding: 0.25em 0.65em;
+    border-radius: 999px;
+    font-weight: 700;
+}
+
+/* ═══════════════════════════════════════
+   PAST / CANCELLED CARD OVERLAY
+   ═══════════════════════════════════════ */
+
+.appt-card-past {
+    border-color: #e2e8f0 !important;
+    opacity: 0.82;
+}
+.appt-card-past:hover {
+    border-color: #94a3b8 !important;
+    transform: none !important;
+}
+.appt-card-cancelled {
+    border-color: rgba(239, 68, 68, 0.15) !important;
+    opacity: 0.75;
+}
+.appt-card-cancelled:hover {
+    transform: none !important;
+}
+
+/* ═══════════════════════════════════════
+   DATE/TIME ROW
+   ═══════════════════════════════════════ */
+
+.appt-datetime-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 0.6rem 0.85rem;
+    border: 1px solid var(--input-border);
+}
+.appt-dt-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+.appt-dt-item .bi {
+    font-size: 0.82rem;
+    color: var(--primary) !important;
+    opacity: 0.7;
+}
+
+/* ═══════════════════════════════════════
+   ACTION FOOTER
+   ═══════════════════════════════════════ */
+
+.appt-action-footer {
+    margin-top: 0.15rem;
+}
+
+/* Past label — shown instead of buttons */
+.past-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0;
+}
+.past-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    letter-spacing: 0.3px;
+}
+.past-label .bi { color: var(--text-muted) !important; }
+
+/* Pending note */
+.pending-note {
+    font-size: 0.73rem;
+    color: #d97706;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(217, 119, 6, 0.08);
+    border-radius: 8px;
+    padding: 0.35rem 0.65rem;
+    margin-bottom: 0.25rem;
+}
+.pending-note .bi { color: #d97706 !important; font-size: 0.78rem; }
+
+/* ═══════════════════════════════════════
+   TABLE STYLES
+   ═══════════════════════════════════════ */
+
+.table thead th {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+.extra-small { font-size: 0.75rem; }
+.bg-soft-teal { background: rgba(0, 194, 168, 0.1); }
+.text-teal { color: #00c2a8; }
+
+/* ═══════════════════════════════════════
+   NOTIFICATION SYSTEM
+   ═══════════════════════════════════════ */
+
+.notification-item {
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+.notification-item:hover {
+    background: rgba(var(--primary-rgb), 0.05) !important;
+}
+.notif-icon {
+    font-size: 1.1rem;
+    color: var(--primary);
+}
+
+/* ═══════════════════════════════════════
+   DARK MODE OVERRIDES
+   ═══════════════════════════════════════ */
+
+.dark-mode .stats-card,
+.dark-mode .appt-item-card {
+    background: #152350 !important;
+    border-color: #243562 !important;
+}
+.dark-mode .appt-datetime-row {
+    background: #0D1B3E;
+    border-color: #243562;
+}
+.dark-mode .appt-card-past {
+    opacity: 0.65;
+    border-color: #243562 !important;
+}
+.dark-mode .table { color: white; }
+.dark-mode .table thead th { background: #0D1B3E; border-color: #243562; }
+.dark-mode .table tbody td { border-color: #243562; }
+.dark-mode .badge-status-completed { background: rgba(148, 163, 184, 0.1); color: #94a3b8; border-color: rgba(148,163,184,0.2); }
+.dark-mode .appt-datetime-row .appt-dt-item { color: #8899CC; }
+.dark-mode .past-label { color: #8899CC; }
+.dark-mode .pending-note { background: rgba(217, 119, 6, 0.12); }
+
+/* ═══════════════════════════════════════
+   BOOKING MODAL
+   ═══════════════════════════════════════ */
+
+.booking-modal .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.slot-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.slot-day-group {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.slot-day-header {
+    background: var(--primary-light);
+    padding: 0.6rem 1rem;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.slot-day-header .day-date {
+    color: var(--text-muted);
+    font-weight: 400;
+    font-size: 0.75rem;
+}
+
+.slot-times {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.75rem 1rem;
+}
+
+.slot-btn {
+    padding: 0.35rem 0.9rem;
+    border: 1px solid var(--primary);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--primary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.slot-btn:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+.slot-btn.selected {
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+.slot-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-color: #ccc;
+    color: #999;
+}
+
+.slot-btn:disabled:hover {
+    background: transparent;
+    color: #999;
+}
+
+.booking-confirm-box {
+    background: var(--primary-light);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
+    display: none;
+}
+
+.booking-confirm-box.show {
+    display: block;
+}
+
+.booking-confirm-box .confirm-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    padding: 0.25rem 0;
+}
+
+.booking-confirm-box .confirm-label {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.booking-confirm-box .confirm-value {
+    font-weight: 700;
+    text-align: end;
+}
+
+.dark-mode .slot-day-group {
+    border-color: #243562;
+}
+
+.dark-mode .slot-day-header {
+    background: #0D1B3E;
+    border-color: #243562;
+}
+
+.dark-mode .slot-day-header .day-date {
+    color: #6EE7B7;
+}
+
+.dark-mode .slot-btn {
+    border-color: #34D399;
+    color: #34D399;
+}
+
+.dark-mode .slot-btn:hover,
+.dark-mode .slot-btn.selected {
+    background: #34D399;
+    color: #0D1B3E;
+}
+
+.dark-mode .booking-confirm-box {
+    background: #0D1B3E;
+}
+
+/* ═══════════════════════════════════════
+   RTL SUPPORT
+   ═══════════════════════════════════════ */
+
+[dir="rtl"] .appt-dt-item { flex-direction: row; }
+[dir="rtl"] .border-start-custom {
+    border-inline-start-width: 4px !important;
+    border-inline-end-width: 0 !important;
+    border-style: solid;
+    border-color: var(--primary) !important;
+}

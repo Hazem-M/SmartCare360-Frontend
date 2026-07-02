@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Smart Care 360</title>
+    
+    <!-- CSS Dependencies -->
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/alert.css" rel="stylesheet">
+    <link href="register.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="../assets/vendor/google-fonts/inter.css" rel="stylesheet">
+</head>
+<body class="login-page"> <!-- Reuse login-page class for layout consistency -->
+
+    <div class="login-container">
+        <!-- Left Side: Visual Content -->
+        <div class="login-visual reveal-left">
+            <div class="visual-overlay"></div>
+            <div class="visual-content">
+                <div class="brand-logo mb-4 d-flex align-items-center gap-2">
+                    <img src="../assets/img/logo.png" alt="Smart Care 360 Logo" style="height: 55px; width: auto; object-fit: contain;">
+                    <span>Smart Care 360</span>
+                </div>
+                <h2 class="display-5 fw-bold mb-4" data-lang="register_visual_title">Join the Future of Health</h2>
+                <p class="lead mb-5" data-lang="register_visual_subtitle">Create your secure medical account today and get access to instant AI diagnostics and expert consultations.</p>
+                
+                <div class="visual-features">
+                    <div class="v-feat-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span data-lang="reg_v_feat1">Secure Encryption</span>
+                    </div>
+                    <div class="v-feat-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span data-lang="reg_v_feat2">AI Health Analysis</span>
+                    </div>
+                    <div class="v-feat-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span data-lang="reg_v_feat3">Verified Specialists</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+
+        <!-- Right Side: Register Form -->
+        <div class="login-form-side reveal-right">
+            <div class="form-wrapper glass-card">
+                <div class="form-header mb-4 text-center">
+                    <h1 class="h3 fw-bold mb-2" data-lang="register_title">Create Account</h1>
+                    <p class="text-muted small" data-lang="register_subtitle_form">Join our community of over 50,000+ healthy users</p>
+                </div>
+
+                <form id="registerForm" class="needs-validation" novalidate>
+                    <!-- Role Selector -->
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small" data-lang="register_as">Register As</label>
+                        <div class="role-selector gap-2">
+                            <input type="radio" name="role" id="role-patient" value="patient" checked>
+                            <label for="role-patient" class="role-card py-2">
+                                <i class="bi bi-person small"></i>
+                                <span class="small" data-lang="role_patient">Patient</span>
+                            </label>
+
+                            <input type="radio" name="role" id="role-doctor" value="doctor">
+                            <label for="role-doctor" class="role-card py-2">
+                                <i class="bi bi-person-badge small"></i>
+                                <span class="small" data-lang="role_doctor">Doctor</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Common Fields -->
+                    <div class="row g-2 mb-2">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small mb-1" data-lang="ph_name">Full Name</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                <input type="text" class="form-control" id="regName" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold small mb-1" data-lang="ph_email">Email Address</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                <input type="email" class="form-control" id="regEmail" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-2">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small mb-1" data-lang="ph_phone">Phone</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                                <input type="tel" class="form-control" id="regPhone" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold small mb-1" data-lang="ph_password">Password</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                <input type="password" class="form-control" id="regPassword" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Patient Specific Fields -->
+                    <div id="patientFields" class="fade-in">
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small mb-1" data-lang="ph_age">Age</label>
+                                <input type="number" class="form-control form-control-sm" id="regAge" min="1">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small mb-1" data-lang="sel_gender">Gender</label>
+                                <select class="form-select form-select-sm" id="regGender">
+                                    <option value="male" data-lang="gen_male">Male</option>
+                                    <option value="female" data-lang="gen_female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doctor Specific Fields -->
+                    <div id="doctorFields" class="d-none fade-in">
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small mb-1" data-lang="ph_specialization">Specialty</label>
+                                <select class="form-select form-select-sm" id="regSpec">
+                                    <option value="" disabled selected data-lang="ph_select_spec">Select Specialty</option>
+                                    <option value="Pneumonia" data-lang="spec_cardiology">Pneumonia</option>
+                                    <option value="Orthopedics" data-lang="spec_orthopedics">Orthopedics</option>
+                                    <option value="Neurology" data-lang="spec_neurology">Neurology</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small mb-1" data-lang="ph_experience">Years Exp.</label>
+                                <input type="number" class="form-control form-control-sm" id="regExp" min="0">
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-2">
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small mb-1" data-lang="sel_gender">Gender</label>
+                                <select class="form-select form-select-sm" id="regGenderDoctor">
+                                    <option value="Male" data-lang="gen_male">Male</option>
+                                    <option value="Female" data-lang="gen_female">Female</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-semibold small mb-1" data-lang="ph_clinic">Clinic Address</label>
+                                <div class="input-group input-group-sm">
+                                    <textarea class="form-control form-control-sm" id="regClinic" rows="1"></textarea>
+                                    <button class="btn btn-outline-primary" type="button" onclick="getCurrentLocation('regClinic')" title="Use My Location"><i class="bi bi-crosshair"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small mb-1" data-lang="ph_id_card">National ID Card</label>
+                            <div class="input-group input-group-sm">
+                                <input type="file" class="form-control" id="regIdCard" accept="image/*,.pdf" required>
+                                <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('regIdCardPreview').classList.toggle('d-none')"><i class="bi bi-eye"></i></button>
+                            </div>
+                            <img id="regIdCardPreview" class="d-none mt-2 img-thumbnail rounded" style="max-height:120px;width:auto;">
+                            <div class="form-text small text-muted" data-lang="id_card_hint">Upload a clear photo or scan of your national ID card.</div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold mb-3 shadow-lg" id="submitBtn">
+                        <span class="btn-text" data-lang="btn_register">Create Account</span>
+                        <span class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
+
+                    <!-- Actions -->
+                    <div class="text-center">
+                        <p class="mb-3 small">
+                            <span data-lang="have_account">Already have an account?</span>
+                            <a href="../login/login.html" class="fw-bold text-primary text-decoration-none" data-lang="login_link">Sign In</a>
+                        </p>
+                        
+                        <div class="d-flex justify-content-center gap-3 align-items-center pt-2 border-top">
+                            <button class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-2 px-3 lang-toggle-btn" onclick="toggleLanguageManual()">
+                                <i class="bi bi-globe"></i>
+                                <span id="langText">العربية</span>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center p-2 rounded-circle dark-mode-toggle" onclick="toggleDarkMode()">
+                                <i class="bi bi-moon-stars" id="modeIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <div class="mt-4 text-center">
+                    <a href="../home/home.html" class="text-muted small text-decoration-none">
+                        <i class="bi bi-arrow-left me-1"></i> <span data-lang="back_home">Back to Homepage</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Dependencies -->
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../shared/lang.js"></script>
+    <script src="../shared/alert.js"></script>
+    <script src="../shared/api.js"></script>
+    <script src="register.js"></script>
+    <script src="../shared/dark-mode.js"></script>
+</body>
+</html>
+
+

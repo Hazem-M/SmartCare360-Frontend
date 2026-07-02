@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Smart Care 360</title>
+    <!-- Bootstrap CSS -->
+    <link id="bootstrap-css" href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/alert.css" rel="stylesheet">
+    <link href="chat.css" rel="stylesheet">
+    <script src="../shared/dark-mode.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body class="vh-100 d-flex flex-column bg-body-tertiary">
+    <!-- Shared Navbar Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Main Chat Container -->
+    <div class="container-fluid flex-grow-1 overflow-hidden d-flex flex-column" style="max-height: calc(100vh - 60px);">
+        <div class="row h-100 flex-grow-1 pt-3 pb-3">
+            <!-- Sidebar list of conversations -->
+            <div class="col-md-4 col-lg-3 h-100 d-none d-md-block pe-md-0">
+                <div class="card h-100 border-0 shadow-sm glass-card rounded-start-4 rounded-end-0">
+                    <div class="card-header bg-white border-bottom p-3">
+                        <h6 class="mb-0 fw-bold" data-lang="chat_contacts">Contacts</h6>
+                    </div>
+                    <div class="list-group list-group-flush overflow-auto h-100" id="contactsList">
+                        <!-- Contacts popoulated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Area -->
+            <div class="col-md-8 col-lg-9 h-100 ps-md-0 d-flex flex-column">
+                <div class="card h-100 border-0 shadow-sm glass-card rounded-end-4 rounded-start-0 d-flex flex-column">
+                    <!-- Chat Header -->
+                    <div class="card-header bg-white border-bottom p-3 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-light d-md-none me-2" onclick="toggleContacts()">â˜°</button>
+                            <div class="d-flex align-items-center gap-3">
+                            <div class="position-relative">
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;" id="chatHeaderIcon">
+                                    <i class="bi bi-robot" style="font-size:1.4rem;"></i>
+                                </div>
+                                <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle" id="onlineStatusIndicator"></span>
+                            </div>
+                            <div>
+                                <h6 class="mb-0 fw-bold" id="chatHeaderName">Smart Care 360 Assistant</h6>
+                                <small class="text-success" id="chatHeaderStatus" data-lang="chat_online">Online</small>
+                            </div>
+                            </div>
+                        </div>
+                        <button id="btnSummarize" class="btn btn-sm btn-outline-primary d-none" onclick="summarizeChat()">
+                            <i class="bi bi-stars"></i> تلخيص ذكي
+                        </button>
+                    </div>
+
+                    <!-- Chat History (Scrollable) -->
+                    <div class="card-body p-4 overflow-auto flex-grow-1 bg-light" id="chatBox">
+                        <!-- AI Greeting (Default) -->
+                        <div class="chat-message received mb-3 d-flex flex-column align-items-start">
+                            <div class="message-bubble bg-white border text-dark p-3 rounded-4 shadow-sm" style="max-width: 75%; border-top-left-radius: 4px !important;">
+                                <p class="mb-0" data-lang="chat_ai_greeting">Hello! I am your Smart Care 360 Assistant. How can I help you today?</p>
+                            </div>
+                            <span class="small text-muted mt-1 px-1">Just now</span>
+                        </div>
+                        
+                        <!-- Dynamically populated via JS -->
+                    </div>
+
+                    <!-- Input Area -->
+                    <div class="card-footer bg-white border-top p-3 position-relative">
+                        <!-- Quick Actions -->
+                        <div id="quickActions" class="d-none mb-2 d-flex gap-2 overflow-auto pb-1 quick-actions-scroll">
+                            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill text-nowrap" onclick="sendQuickAction('كيف أرفع صورة أشعة؟')">💡 كيف أرفع صورة أشعة؟</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill text-nowrap" onclick="sendQuickAction('كيف أحجز موعد مع طبيب؟')">💡 كيف أحجز موعد؟</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill text-nowrap" onclick="sendQuickAction('ما هي الأمراض التي تشخصها المنصة؟')">💡 ما الأمراض التي تشخصها المنصة؟</button>
+                        </div>
+                        <form id="chatForm">
+                            <div class="input-group">
+                                <input type="text" class="form-control rounded-pill px-4" id="chatInput" placeholder="Type your message..." data-lang="ph_type_msg" autocomplete="off" required>
+                                <button type="button" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center ms-2" id="voiceBtn" style="width: 45px; height: 45px;" onclick="startVoiceRecognition('chatInput', 'voiceIcon')">
+                                    <i class="bi bi-mic-fill text-primary" id="voiceIcon"></i>
+                                </button>
+                                <button class="btn btn-primary rounded-circle ms-2 shadow-sm d-flex align-items-center justify-content-center" type="submit" style="width: 45px; height: 45px;">
+                                    <i class="bi bi-send-fill"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Modal -->
+    <div class="modal fade" id="summaryModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header border-bottom-0 bg-primary text-white">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-stars text-warning me-2"></i> تلخيص الحالة الذكي (AI)</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="summaryModalBody" style="background-color: var(--surface-2); border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+                    <!-- Summary content goes here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/vendor/signalr/signalr.min.js"></script>
+    <script src="../shared/lang.js"></script>
+    <script src="../shared/alert.js"></script>
+    <script src="../shared/api.js"></script>
+    <script src="../shared/navbar.js"></script>
+    <script src="chat.js"></script>
+    <script src="../shared/dark-mode.js"></script>
+</body>
+</html>
+
+
+

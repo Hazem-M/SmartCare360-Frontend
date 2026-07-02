@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - Smart Care 360</title>
+    <!-- Bootstrap CSS -->
+    <link id="bootstrap-css" href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/alert.css" rel="stylesheet">
+    <link href="doctor-dashboard.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="../shared/dark-mode.js"></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <div class="doctor-layout">
+        <!-- Sidebar -->
+        <aside class="doctor-sidebar" id="sidebar">
+            <div class="sidebar-brand-wrapper">
+                <div class="d-flex align-items-center gap-2">
+                    <img src="../assets/img/logo.png" alt="Logo" class="sidebar-logo">
+                    <div>
+                        <h5 class="brand-title mb-0 fw-bold text-primary" data-lang="brand_name">Smart Care 360</h5>
+                        <small class="brand-subtitle text-muted" data-lang="sidebar_brand_subtitle">Clinic Management System</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Doctor Profile Card in Sidebar -->
+            <div class="doctor-profile-card" style="cursor:pointer;" onclick="openEditProfileModal()" title="Edit Profile">
+                <div class="profile-card-body d-flex align-items-center gap-3">
+                    <div class="avatar-circle-wrapper position-relative">
+                        <div class="avatar-initials" id="sidebarDoctorInitials">د</div>
+                        <span class="status-indicator"></span>
+                    </div>
+                    <div class="profile-card-info">
+                        <h6 class="profile-name mb-0 fw-bold" id="sidebarDoctorName">د. أحمد محمد</h6>
+                        <small class="text-muted" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; max-width:130px;">
+                            <span data-lang="sidebar_role_doctor">Doctor</span><span id="sidebarSpecialtyDot" style="display:none;"> · </span><span class="text-primary fw-semibold" id="sidebarDoctorSpecialty"></span>
+                        </small>
+                        <small class="text-warning fw-bold small" id="sidebarDoctorRating" style="display:none;"></small>
+                        <small class="text-muted small mt-0 d-block text-truncate" id="sidebarClinicAddress" style="display:none; font-size:0.75rem; max-width:160px;">
+                            <i class="bi bi-geo-alt"></i> <span></span>
+                        </small>
+                    </div>
+                    <i class="bi bi-pencil-square text-muted ms-auto" style="font-size:0.8rem;"></i>
+                </div>
+            </div>
+
+            <!-- Sidebar Navigation Links -->
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-nav-link active" data-view="view-overview">
+                    <i class="bi bi-grid-fill"></i>
+                    <span data-lang="nav_overview">Overview</span>
+                </a>
+                <a href="#" class="sidebar-nav-link" data-view="view-appointments">
+                    <i class="bi bi-calendar-event-fill"></i>
+                    <span data-lang="nav_appointments">Appointments</span>
+                </a>
+                <a href="#" class="sidebar-nav-link" data-view="view-patients">
+                    <i class="bi bi-people-fill"></i>
+                    <span data-lang="nav_patients">Patients</span>
+                </a>
+                <a href="#" class="sidebar-nav-link" data-view="view-chat">
+                    <i class="bi bi-chat-dots-fill"></i>
+                    <span data-lang="nav_chat_patients">Patient Chat</span>
+                </a>
+                <a href="#" class="sidebar-nav-link" data-view="view-reports">
+                    <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                    <span data-lang="nav_reports">Reports</span>
+                </a>
+                <a href="#" class="sidebar-nav-link" data-view="view-financials">
+                    <i class="bi bi-wallet2"></i>
+                    <span data-lang="nav_financials">Financials</span>
+                </a>
+                <a href="#" class="sidebar-nav-link" data-view="view-working-hours">
+                    <i class="bi bi-gear-fill"></i>
+                    <span data-lang="nav_settings">Settings</span>
+                </a>
+            </nav>
+
+            <!-- Sidebar Footer -->
+            <div class="sidebar-footer-wrapper mt-auto">
+                <button class="btn logout-sidebar-btn w-100 d-flex align-items-center justify-content-center gap-2" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span data-lang="nav_logout">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="doctor-main">
+            <!-- Topbar -->
+            <header class="doctor-topbar">
+                <div class="topbar-left d-flex align-items-center gap-2">
+                    <button class="btn btn-sm d-lg-none border-0 text-dark fs-3 p-1" id="mobileMenuToggle">
+                        <i class="bi bi-list"></i>
+                    </button>
+                </div>
+
+                <div class="topbar-right d-flex align-items-center gap-3">
+                    <!-- Date display -->
+                    <div class="topbar-date small fw-bold text-muted d-none d-md-block">
+                        <i class="bi bi-calendar3 text-primary me-1"></i>
+                        <span id="currentDateDisplay"></span>
+                    </div>
+
+
+
+                    <!-- Dark mode button -->
+                    <button class="icon-circle-btn dark-mode-btn" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+                        <i class="bi bi-moon-stars"></i>
+                    </button>
+
+                    <!-- Language Selector Button -->
+                    <div class="dropdown">
+                        <button class="icon-circle-btn lang-btn dropdown-toggle border-0" type="button" data-bs-toggle="dropdown" title="Language">
+                            <i class="bi bi-globe2"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 mt-2">
+                            <li><a class="dropdown-item py-2" href="#" onclick="toggleLanguage('en')">English</a></li>
+                            <li><a class="dropdown-item py-2" href="#" onclick="toggleLanguage('ar')">العربية (Arabic)</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content Container -->
+            <div class="doctor-content">
+                
+                <!-- VIEW 1: OVERVIEW -->
+                <div id="view-overview" class="doctor-view active">
+                    <!-- Welcome header & Quick Action buttons -->
+                    <div class="welcome-header-wrapper d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                        <div>
+                            <h2 class="fw-bold mb-1 pine-slate-text">
+                                <span data-lang="doc_dash_welcome_prefix">Welcome back, </span>
+                                <span id="dashDoctorName" class="text-primary">Doctor</span>
+                            </h2>
+                            <p class="text-muted small mb-0" id="apptSummaryLine">
+                                <span data-lang="doc_dash_you_have">You have</span> 
+                                <span class="text-primary fw-bold" id="apptSummaryCount">0</span> 
+                                <span data-lang="doc_dash_appts_today">upcoming appointments.</span>
+                                <button class="btn btn-sm btn-link text-decoration-none p-0 ms-2" onclick="loadDashboard()">
+                                    <i class="bi bi-arrow-clockwise"></i> <span data-lang="doc_dash_refresh">Refresh</span>
+                                </button>
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-primary rounded-pill px-4 shadow-sm fw-bold d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#editAvailabilityModal">
+                                <i class="bi bi-calendar-plus"></i> <span data-lang="add_appointment">Add Appointment</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 5 Metrics Stats Row -->
+                    <div class="row g-3 mb-4">
+                        <div class="col">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="stat-total-patients">—</h4>
+                                    <span class="small text-muted" data-lang="total_patients">Total Patients</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-info-subtle text-info">
+                                    <i class="bi bi-people-fill text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="stat-total-sessions">—</h4>
+                                    <span class="small text-muted" data-lang="total_sessions">Total Sessions</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-primary-subtle text-primary">
+                                    <i class="bi bi-journal-text text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="stat-today">—</h4>
+                                    <span class="small text-muted" data-lang="today_appts">Today's Appointments</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-warning-subtle text-warning">
+                                    <i class="bi bi-calendar-check text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="metric-card shadow-sm p-3 rounded-4 border bg-white d-flex align-items-center justify-content-between h-100">
+                                <div>
+                                    <h4 class="fw-bold mb-0 text-dark" id="stat-pending-reports">—</h4>
+                                    <span class="small text-muted" data-lang="stat_reports">Pending Reports</span>
+                                </div>
+                                <div class="metric-icon-wrapper bg-danger-subtle text-danger">
+                                    <i class="bi bi-file-earmark-medical text-danger"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Grid -->
+                    <div class="row g-4">
+
+                        <!-- Left: Schedule + Weekly Chart -->
+                        <div class="col-lg-8">
+
+                            <!-- Today's Schedule -->
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                                <div class="card-header bg-white border-0 p-4 pb-1 d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-clock-history text-primary fs-4"></i>
+                                        <span data-lang="doc_sched_title">Today's Schedule</span>
+                                    </h5>
+                                    <a href="#" class="text-primary fw-bold text-decoration-none small" onclick="switchView('view-appointments')" data-lang="view_all">View All</a>
+                                </div>
+                                <div class="card-body p-4 pt-3">
+                                    <div class="list-group list-group-flush appointments-container" id="docAppointmentsList">
+                                        <div class="p-5 text-center">
+                                            <div class="spinner-border text-primary" role="status"></div>
+                                            <p class="mt-2 text-muted">Loading your schedule...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Weekly Consultations -->
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                                <div class="card-header bg-white border-0 p-4 pb-1">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-graph-up text-primary fs-4"></i>
+                                        <span data-lang="chart_consultations_title">Weekly Patient Activity</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div style="position: relative; height: 280px; width: 100%;">
+                                        <canvas id="weeklyConsultationsChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Right: Calendar + Quick Actions -->
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                                <div class="card-body p-4">
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <h6 class="fw-bold mb-0" id="miniCalendarTitle">June 2026</h6>
+                                        <i class="bi bi-calendar3 text-muted"></i>
+                                    </div>
+                                    <div class="mini-calendar" id="miniCalendarBody"></div>
+                                </div>
+                            </div>
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                                <div class="card-body p-4">
+                                    <h6 class="fw-bold mb-3 border-bottom pb-2" data-lang="quick_actions">Quick Actions</h6>
+                                    <div class="row g-2">
+                                        <div class="col-6">
+                                            <a href="#" class="quick-action-btn shadow-sm" onclick="switchView('view-appointments')">
+                                                <i class="bi bi-calendar3-week text-primary"></i>
+                                                <span data-lang="sched_title">Appointments Schedule</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="#" class="quick-action-btn shadow-sm" onclick="switchView('view-patients')">
+                                                <i class="bi bi-people text-info"></i>
+                                                <span data-lang="patients_list">Patients List</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="#" class="quick-action-btn shadow-sm" onclick="switchView('view-chat')">
+                                                <i class="bi bi-chat-dots-fill text-success"></i>
+                                                <span data-lang="nav_chat_patients">Patient Chat</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="#" class="quick-action-btn shadow-sm" onclick="switchView('view-reports')">
+                                                <i class="bi bi-file-earmark-bar-graph text-danger"></i>
+                                                <span data-lang="nav_reports">Reports</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Full-width row: Appt Status | Hourly Dist | Scan Overview -->
+                    <div class="row g-4 mt-2">
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                                <div class="card-header bg-white border-0 p-4 pb-1">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-pie-chart-fill text-info fs-4"></i>
+                                        <span data-lang="chart_appt_status">Appointment Status</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4 d-flex align-items-center justify-content-center">
+                                    <div style="position: relative; height: 220px; width: 100%;">
+                                        <canvas id="apptStatusChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                                <div class="card-header bg-white border-0 p-4 pb-1">
+                                    <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                        <i class="bi bi-clock-history text-warning fs-4"></i>
+                                        <span data-lang="chart_hourly_dist">Hourly Appointment Distribution</span>
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div style="position: relative; height: 220px; width: 100%;">
+                                        <canvas id="hourlyDistChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                                <div class="card-body p-4">
+                                    <h6 class="fw-bold mb-3 border-bottom pb-2" data-lang="scan_overview">Scan Overview</h6>
+                                    <div id="scanOverviewContent">
+                                        <div class="text-center text-muted py-3">
+                                            <span class="small">Loading...</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- VIEW 2: APPOINTMENTS -->
+                <div id="view-appointments" class="doctor-view d-none">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="card-header bg-white border-0 p-4 pb-1">
+                            <h4 class="mb-0 fw-bold" data-lang="nav_appointments">Appointments Management</h4>
+                        </div>
+                        <div class="card-body p-4">
+                            <!-- Nav pills for Sub-Navigation -->
+                            <ul class="nav nav-pills mb-4 gap-2" id="appointmentsTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active rounded-pill fw-bold" id="upcoming-tab" data-bs-toggle="pill" data-bs-target="#upcoming-appointments" type="button" role="tab" data-lang="tab_active_appointments">Upcoming Schedule</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link rounded-pill fw-bold" id="past-tab" data-bs-toggle="pill" data-bs-target="#past-appointments" type="button" role="tab" data-lang="tab_past_appointments">Booking History</button>
+                                </li>
+                            </ul>
+                            
+                            <!-- Tab Content -->
+                            <div class="tab-content" id="appointmentsTabContent">
+                                <!-- Upcoming Appointments Tab -->
+                                <div class="tab-pane fade show active" id="upcoming-appointments" role="tabpanel" aria-labelledby="upcoming-tab">
+                                    <p class="text-muted small mb-3" data-lang="upcoming_appointments_desc">Manage your scheduled clinic appointments and check-in patient queues.</p>
+                                    <div class="list-group list-group-flush" id="fullAppointmentsListContainer">
+                                        <!-- Populated dynamically via JS -->
+                                    </div>
+                                </div>
+                                
+                                <!-- Past Appointments Tab -->
+                                <div class="tab-pane fade" id="past-appointments" role="tabpanel" aria-labelledby="past-tab">
+                                    <p class="text-muted small mb-3" data-lang="past_appointments_desc">A record of all completed and cancelled clinic appointments.</p>
+                                    <div class="table-responsive">
+                                        <table class="table table-hover align-middle mb-0">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th data-lang="th_patient">Patient</th>
+                                                    <th data-lang="col_date">Date</th>
+                                                    <th data-lang="col_time">Time</th>
+                                                    <th data-lang="col_status">Status</th>
+                                                    <th data-lang="lbl_notes">Reason</th>
+                                                    <th data-lang="th_action">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="pastAppointmentsListContainer">
+                                                <!-- Populated dynamically via JS -->
+                                                <tr>
+                                                    <td colspan="6" class="text-center py-4 text-muted">
+                                                        Loading bookings history...
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 3: PATIENTS -->
+                <div id="view-patients" class="doctor-view d-none">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="card-header bg-white border-0 p-4 pb-1">
+                            <h4 class="mb-0 fw-bold" data-lang="nav_patients">Patients List</h4>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="d-flex mb-3">
+                                <input type="text" id="patientSearchInput" class="form-control rounded-pill" style="max-width:300px;" placeholder="Search patients..." data-lang="search_patients_placeholder">
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th data-lang="th_patient">Patient</th>
+                                            <th data-lang="col_status">Status</th>
+                                            <th data-lang="th_action">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="patientsListTableBody">
+                                        <!-- Populated dynamically via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 4: CHAT -->
+                <div id="view-chat" class="doctor-view d-none">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4" style="height: calc(100vh - 170px); min-height: 500px;">
+                        <div class="row g-0 h-100">
+                            <!-- Sidebar list of conversations -->
+                            <div class="col-md-4 col-lg-3 h-100 border-end d-flex flex-column">
+                                <div class="card-header bg-white border-bottom p-3">
+                                    <h6 class="mb-0 fw-bold" data-lang="chat_contacts">Contacts</h6>
+                                </div>
+                                <div class="list-group list-group-flush overflow-auto flex-grow-1" id="contactsList" style="max-height: calc(100vh - 230px); min-height: 400px;">
+                                    <!-- Contacts populated by JS -->
+                                </div>
+                            </div>
+
+                            <!-- Chat Area -->
+                            <div class="col-md-8 col-lg-9 h-100 d-flex flex-column">
+                                <!-- Chat Header -->
+                                <div class="card-header bg-white border-bottom p-3 d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="position-relative">
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;" id="chatHeaderIcon">
+                                                <i class="bi bi-robot" style="font-size:1.4rem;"></i>
+                                            </div>
+                                            <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle" id="onlineStatusIndicator"></span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold" id="chatHeaderName">Smart Care 360 Assistant</h6>
+                                            <small class="text-success" id="chatHeaderStatus" data-lang="chat_online">Online</small>
+                                        </div>
+                                    </div>
+                                    <button id="btnSummarize" class="btn btn-sm btn-outline-primary d-none" onclick="summarizeChat()">
+                                        <i class="bi bi-stars"></i> تلخيص ذكي
+                                    </button>
+                                </div>
+
+                                <!-- Chat History (Scrollable) -->
+                                <div class="card-body p-4 overflow-auto flex-grow-1" id="chatBox" style="max-height: calc(100vh - 350px); min-height: 300px;">
+                                    <!-- AI Greeting (Default) -->
+                                    <div class="chat-message received mb-3 d-flex flex-column align-items-start">
+                                        <div class="message-bubble bg-white border text-dark p-3 rounded-4 shadow-sm" style="max-width: 75%;">
+                                            <p class="mb-0" data-lang="chat_ai_greeting">Hello! I am your Smart Care 360 Assistant. How can I help you today?</p>
+                                        </div>
+                                        <span class="small text-muted mt-1 px-1">Just now</span>
+                                    </div>
+                                </div>
+
+                                <!-- Input Area -->
+                                <div class="card-footer bg-white border-top p-3">
+                                    <form id="chatForm">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control rounded-pill px-4" id="chatInput" placeholder="Type your message..." data-lang="ph_type_msg" autocomplete="off" required>
+                                            <button class="btn btn-primary rounded-circle ms-2 shadow-sm d-flex align-items-center justify-content-center" type="submit" style="width: 45px; height: 45px;">
+                                                <i class="bi bi-send-fill"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- VIEW 5: REPORTS -->
+                <div id="view-reports" class="doctor-view d-none">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="card-header bg-white border-0 p-4 pb-1">
+                            <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                <i class="bi bi-shield-plus text-success fs-4"></i>
+                                <span data-lang="doc_reports_title">Pending AI Reports</span>
+                            </h5>
+                        </div>
+                        <div class="card-body p-4 pt-3">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="small text-uppercase text-muted border-bottom">
+                                        <tr>
+                                            <th class="border-0 ps-0 py-3" data-lang="th_patient">Patient</th>
+                                            <th class="border-0 py-3 text-center" data-lang="th_ai_result">AI Result</th>
+                                            <th class="border-0 pe-0 py-3 text-end" data-lang="th_action">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="reportsTableBody">
+                                        <tr>
+                                            <td colspan="3" class="text-center py-5">
+                                                <div class="spinner-grow text-success spinner-grow-sm" role="status"></div>
+                                                <p class="mt-2 text-muted small">Loading reports...</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 6: WORKING HOURS & AVAILABILITY -->
+                <div id="view-working-hours" class="doctor-view d-none">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                        <div class="card-header bg-white border-0 p-4 pb-1 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
+                                <i class="bi bi-calendar-range text-info fs-4"></i>
+                                <span data-lang="manage_hours">Manage My Working Hours</span>
+                            </h5>
+                            <button class="btn btn-primary btn-sm rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#editAvailabilityModal">
+                                <i class="bi bi-pencil-square me-1"></i> <span data-lang="btn_edit_sched">Edit Schedule</span>
+                            </button>
+                        </div>
+                        <div class="card-body p-4 pt-3">
+                            <div class="row" id="availabilityDisplayGrid">
+                                <!-- Populated dynamically -->
+                                <div class="text-center py-4 text-muted small">Loading schedule...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 6: FINANCIALS -->
+                <div id="view-financials" class="doctor-view d-none">
+                    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px;">
+                        <div class="text-center">
+                            <div class="display-1 text-muted mb-4">
+                                <i class="bi bi-cone-striped"></i>
+                            </div>
+                            <h3 class="fw-bold text-dark mb-2" data-lang="fin_unavailable_title">Not Available Now</h3>
+                            <p class="text-muted mb-0" data-lang="fin_unavailable_desc">Financial features are under development and will be available soon.</p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Doctor Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <div class="modal-header border-0 p-4 pb-0">
+                    <h5 class="modal-title fw-bold d-flex align-items-center gap-2">
+                        <i class="bi bi-person-circle text-primary"></i>
+                        <span data-lang="edit_profile_title">Edit My Profile</span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="editProfileForm">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="lbl_full_name">Full Name</label>
+                            <input type="text" class="form-control rounded-3" id="profileFullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="lbl_specialty">Specialty</label>
+                            <select class="form-select rounded-3" id="profileSpecialty">
+                                <option value="" disabled selected data-lang="ph_select_spec">Select Specialty</option>
+                                <option value="Pneumonia" data-lang="spec_pneumonia">Pulmonology / Chest</option>
+                                <option value="Orthopedics" data-lang="spec_orthopedics">Orthopedics</option>
+                                <option value="Neurology" data-lang="spec_neurology">Neurology</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="lbl_phone">Phone Number</label>
+                            <input type="tel" class="form-control rounded-3" id="profilePhone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="lbl_exp_years">Years of Experience</label>
+                            <input type="number" class="form-control rounded-3" id="profileExpYears" min="0" max="60">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="lbl_clinic_address">Clinic Address</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control rounded-3" id="profileAddress" placeholder="e.g. 25 Nile Street, Cairo">
+                                <button class="btn btn-outline-primary rounded-3" type="button" onclick="getCurrentLocation('profileAddress')" title="Use My Location"><i class="bi bi-crosshair"></i></button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold small text-muted" data-lang="lbl_bio">Bio / About</label>
+                            <textarea class="form-control rounded-3" id="profileBio" rows="3"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" data-lang="btn_cancel">Cancel</button>
+                    <button type="submit" form="editProfileForm" class="btn btn-primary rounded-pill px-4" id="saveProfileBtn">
+                        <i class="bi bi-check-circle me-1"></i> <span data-lang="btn_save">Save Changes</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Availability Modal -->
+    <div class="modal fade" id="editAvailabilityModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <div class="modal-header border-0 p-4 pb-0">
+                    <h5 class="modal-title fw-bold" data-lang="modal_title_avail">Update Working Hours</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="availabilityForm">
+                        <div class="table-responsive">
+                            <table class="table table-borderless align-middle">
+                                <thead class="small text-uppercase text-muted">
+                                    <tr>
+                                        <th data-lang="col_day">Day</th>
+                                        <th data-lang="col_status">Status</th>
+                                        <th data-lang="col_start">Start Time</th>
+                                        <th data-lang="col_end">End Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="availabilityFormBody">
+                                    <!-- Populated in JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal" data-lang="btn_cancel">Cancel</button>
+                    <button type="submit" form="availabilityForm" class="btn btn-primary rounded-pill px-4" data-lang="btn_save">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Details Modal -->
+    <div class="modal fade" id="patientDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow rounded-4">
+                <div class="modal-header border-0 p-4 pb-0">
+                    <h5 class="modal-title fw-bold" id="pModalTitle"><i class="bi bi-person-lines-fill text-primary me-2"></i><span data-lang="patient_profile_title">Patient Medical Profile</span></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-4">
+                        <div class="col-md-4 text-center border-end">
+                            <div class="avatar-circle bg-primary-subtle text-primary fw-bold p-3 rounded-circle mx-auto mb-3" id="pModalAvatar" style="width:80px; height:80px; display:flex; align-items:center; justify-content:center; font-size: 2rem;">
+                                P
+                            </div>
+                            <h5 class="fw-bold mb-1" id="pModalName">-</h5>
+                            <p class="text-muted small mb-3" id="pModalEmail">-</p>
+                            
+                            <div class="d-flex justify-content-center gap-2 mb-2">
+                                <span class="badge bg-light text-dark border px-2 py-1 rounded-pill" id="pModalGender">-</span>
+                                <span class="badge bg-light text-dark border px-2 py-1 rounded-pill" id="pModalAge">-</span>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h6 class="fw-bold text-dark mb-2"><i class="bi bi-file-medical text-primary me-1"></i> <span data-lang="lbl_notes">Medical History</span></h6>
+                            <p class="text-muted bg-light p-3 rounded-3 small mb-4" id="pModalHistory">-</p>
+
+                            <h6 class="fw-bold text-dark mb-2"><i class="bi bi-activity text-primary me-1"></i> <span data-lang="patient_scans_title">Scans & AI Analyses</span></h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-hover align-middle">
+                                    <thead>
+                                        <tr class="small text-muted">
+                                            <th>Type</th>
+                                            <th>AI Result</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pModalScansBody">
+                                        <!-- Populated dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-dismiss="modal" data-lang="btn_close">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer py-4 mt-auto border-top" style="background: #0f172a;">
+        <div class="container text-center">
+            <p class="mb-0 fw-medium" style="font-size: 0.9rem; color: #cbd5e1;">&copy; 2026 سمارت كير 360. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    <!-- Summary Modal -->
+    <div class="modal fade" id="summaryModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header border-bottom-0 bg-primary text-white">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-stars text-warning me-2"></i> تلخيص الحالة الذكي (AI)</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4" id="summaryModalBody" style="background-color: var(--bs-light); border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;">
+                    <!-- Summary content goes here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medical AI Assistant Widget -->
+    <div id="doctorBotWidget" class="position-fixed shadow-lg rounded-4 overflow-hidden d-flex flex-column" style="bottom: 100px; inset-inline-end: 30px; width: 380px; height: 550px; display: none !important; z-index: 1050; background: var(--bg); border: 1px solid var(--border-color); transition: all 0.3s ease;">
+        <!-- Header -->
+        <div class="d-flex align-items-center justify-content-between p-3" style="background: linear-gradient(135deg, var(--primary), var(--surface-2)); color: white;">
+            <div class="d-flex align-items-center gap-2">
+                <div class="position-relative">
+                    <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="bi bi-robot fs-5"></i>
+                    </div>
+                    <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
+                </div>
+                <div>
+                    <h6 class="mb-0 fw-bold" data-lang="doc_bot_title">Medical AI Assistant</h6>
+                    <small class="text-white-50" data-lang="chat_online">Online</small>
+                </div>
+            </div>
+            <button class="btn btn-sm text-white border-0" id="closeDoctorBotBtn"><i class="bi bi-x-lg fs-5"></i></button>
+        </div>
+        <!-- Messages Area -->
+        <div id="doctorBotMessages" class="flex-grow-1 p-4" style="overflow-y: auto; background-color: var(--surface);">
+            <!-- Greeting Message -->
+            <div class="d-flex flex-column align-items-start mb-3">
+                <div class="bg-white border text-dark p-3 rounded-4 shadow-sm" style="max-width: 85%; border-top-left-radius: 4px !important; font-size: 0.95rem;">
+                    <p class="mb-0" data-lang="doc_bot_greeting">Hello Doctor, I am your Medical AI Assistant. How can I help you today?</p>
+                </div>
+            </div>
+        </div>
+        <!-- Input Area -->
+        <div class="p-3 border-top position-relative" style="background-color: var(--bg);">
+            <!-- Quick Actions -->
+            <div id="doctorQuickActions" class="mb-2 d-flex gap-2 overflow-auto pb-1" style="white-space: nowrap; scrollbar-width: none;">
+                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill flex-shrink-0" onclick="document.getElementById('doctorBotInput').value = 'لخص لي سجل مريض محدد'; document.getElementById('doctorBotInput').focus();">💡 تلخيص مريض</button>
+                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill flex-shrink-0" onclick="document.getElementById('doctorBotInput').value = 'ما هي أحدث بروتوكولات علاج الالتهاب الرئوي؟'; document.getElementById('doctorBotInput').focus();">💡 بروتوكول علاج</button>
+                <button type="button" class="btn btn-sm btn-outline-primary rounded-pill flex-shrink-0" onclick="document.getElementById('doctorBotInput').value = 'ساعدني في كتابة روشتة لحالة'; document.getElementById('doctorBotInput').focus();">💡 مسودة روشتة</button>
+            </div>
+            <form id="doctorBotForm" class="d-flex gap-2 mb-0">
+                <input type="text" id="doctorBotInput" class="form-control rounded-pill px-3" data-lang="doc_bot_placeholder" placeholder="Ask about a medical condition, protocol, or patient..." autocomplete="off">
+                <button type="button" class="btn btn-light rounded-circle shadow-sm d-flex align-items-center justify-content-center border" style="width: 40px; height: 40px; flex-shrink: 0;" onclick="startVoiceRecognition('doctorBotInput', 'doctorVoiceIcon')">
+                    <i class="bi bi-mic-fill text-primary" id="doctorVoiceIcon"></i>
+                </button>
+                <button type="submit" class="btn btn-primary rounded-circle shadow-sm d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; flex-shrink: 0;" id="doctorBotSendBtn">
+                    <i class="bi bi-send-fill text-white rtl-flip" style="transform: rotate(45deg); margin-left: -2px;"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <div id="doctorBotFab" class="bot-widget-btn" style="z-index: 1040;">
+        <i class="bi bi-chat-dots-fill"></i>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/vendor/signalr/signalr.min.js"></script>
+    <script src="../shared/lang.js"></script>
+    <script src="../shared/alert.js"></script>
+    <script src="../shared/api.js"></script>
+    <script src="../assets/vendor/chartjs/chart.min.js"></script>
+    <script src="doctor-dashboard.js"></script>
+    <script src="../shared/dark-mode.js"></script>
+</body>
+</html>

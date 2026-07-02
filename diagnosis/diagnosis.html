@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Diagnosis | Smart Care 360</title>
+    
+    <!-- CSS Dependencies -->
+    <link href="../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link href="../shared/theme.css" rel="stylesheet">
+    <link href="../shared/alert.css" rel="stylesheet">
+    <link href="diagnosis.css?v=6" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/vendor/fontawesome/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="../assets/vendor/google-fonts/inter.css" rel="stylesheet">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navbar Container -->
+    <div id="navbar-placeholder"></div>
+
+    <!-- Page Header -->
+    <header class="page-header py-5 mb-5 text-white">
+        <div class="container py-4 text-center">
+            <span class="badge rounded-pill bg-white text-primary mb-3 shadow-sm px-3 py-2 fw-bold" data-lang="diag_badge">Smart Analysis</span>
+            <h1 class="display-5 fw-bold mb-3" data-lang="diag_title">New AI Diagnosis</h1>
+            <p class="lead opacity-75 mx-auto" style="max-width: 600px;" data-lang="diag_subtitle">Upload your medical scans or reports for an instant, preliminary AI analysis powered by deep learning.</p>
+        </div>
+        
+        <!-- Background Shapes (consistent with home/login) -->
+        <div class="header-shape shape-1"></div>
+        <div class="header-shape shape-2"></div>
+    </header>
+
+    <main class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="glass-card p-4 p-md-5 reveal-up">
+                    <form id="diagnosisForm">
+                        <!-- STEP 1: Selection -->
+                        <div id="stepSelection" class="reveal-up mb-5">
+                            <div class="text-center mb-5">
+                                <h3 class="fw-bold text-dark" data-lang="diag_type_label">Select Examination Type</h3>
+                                <p class="text-muted" data-lang="diag_info_text">Our AI models are specifically trained for these types of medical data.</p>
+                            </div>
+                            
+                            <input type="hidden" id="scanType" required>
+                            
+                            <div class="row g-4 justify-content-center">
+                                <div class="col-6 col-md-3">
+                                    <div class="scan-type-card bg-white border rounded-4 text-center p-4 h-100 shadow-sm custom-transition cursor-pointer" onclick="selectScanType('xray_bone', this, 'fa-solid fa-bone')">
+                                        <i class="fa-solid fa-bone display-4 text-primary mb-3 d-block"></i>
+                                        <h6 class="fw-bold lh-base" data-lang="type_xray">X-Ray (Bone Fracture)</h6>
+                                    </div>
+                                </div>
+
+                                <div class="col-6 col-md-3">
+                                    <div class="scan-type-card bg-white border rounded-4 text-center p-4 h-100 shadow-sm custom-transition cursor-pointer" onclick="selectScanType('ecg_heart', this, 'fa-solid fa-lungs')">
+                                        <i class="fa-solid fa-lungs display-4 text-info mb-3 d-block"></i>
+                                        <h6 class="fw-bold lh-base" data-lang="type_ecg">X-Ray (Pneumonia)</h6>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="scan-type-card bg-white border rounded-4 text-center p-4 h-100 shadow-sm custom-transition cursor-pointer" onclick="selectScanType('brain_neurology', this, 'fa-solid fa-brain')">
+                                        <i class="fa-solid fa-brain display-4 text-purple mb-3 d-block"></i>
+                                        <h6 class="fw-bold lh-base" data-lang="type_blood">Brain Tumors (MRI)</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- STEP 2: Upload Zone -->
+                        <div id="stepUpload" class="d-none reveal-up mb-5">
+                            <div class="d-flex flex-wrap justify-content-between align-items-center bg-light p-3 rounded-4 mb-4 border shadow-sm">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="bg-white p-3 rounded-circle shadow-sm border" id="selectedExamIconContainer">
+                                        <i class="bi bi-file-medical text-primary fs-4" id="selectedExamIcon"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted small fw-bold text-uppercase" style="letter-spacing: 1px;" data-lang="selected_exam">SELECTED EXAMINATION</span>
+                                        <h5 class="fw-bold mb-0 text-dark mt-1" id="selectedExamTitle">...</h5>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill px-4 py-2 fw-bold mt-3 mt-sm-0" onclick="reselectScanType()">
+                                    <i class="bi bi-arrow-left me-1"></i> <span data-lang="btn_change">Change Selection</span>
+                                </button>
+                            </div>
+                            
+                            <div class="row justify-content-center">
+                                <div class="col-md-10">
+                                    <label class="form-label fw-bold mb-3 text-dark d-flex align-items-center gap-2">
+                                        <i class="bi bi-cloud-arrow-up text-primary"></i>
+                                        <span data-lang="diag_upload_label">Upload File</span>
+                                    </label>
+                                    
+                                    <div class="upload-dropzone p-5 text-center" id="dropzone">
+                                        <div class="upload-content">
+                                            <div class="pulse-icon mb-3">
+                                                <i class="bi bi-file-earmark-arrow-up"></i>
+                                            </div>
+                                            <h5 class="fw-bold mb-1" data-lang="drag_drop">Drag and drop file here</h5>
+                                            <p class="text-muted small mb-3" data-lang="or_browse">or click to browse from your device</p>
+                                            <button type="button" class="btn btn-primary rounded-pill px-5 py-2 fw-bold shadow-sm" onclick="document.getElementById('fileInput').click()" data-lang="btn_browse">Browse Files</button>
+                                            <input type="file" id="fileInput" class="d-none" accept="image/jpeg, image/png, application/pdf">
+                                        </div>
+                                        
+                                        <!-- File Preview Overlay -->
+                                        <div id="previewArea" class="preview-overlay d-none">
+                                            <div class="preview-card glass-card shadow-lg border">
+                                                <div id="previewMedia"></div>
+                                                <div class="p-3 bg-white border-top d-flex justify-content-between align-items-center">
+                                                    <span class="text-truncate fw-bold small pe-3" id="fileNameDisplay">file_name.jpg</span>
+                                                    <button type="button" class="btn btn-sm btn-danger border-0 p-1 rounded-circle remove-btn" onclick="clearPreview()" style="width:28px; height:28px;">
+                                                        <i class="bi bi-x"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-lg" id="analyzeBtn">
+                                <span class="btn-text" data-lang="btn_analyze">Analyze with AI</span>
+                                <div class="spinner-border spinner-border-sm d-none" role="status"></div>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Analysis Loader (Hidden by default) -->
+                    <div id="analysisLoader" class="text-center py-5 d-none">
+                        <div class="ai-scanning-box mx-auto mb-4">
+                            <div class="scan-line"></div>
+                            <i class="bi bi-cpu display-4 text-primary"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2" data-lang="ai_analyzing">AI is analyzing your data...</h4>
+                        <p class="text-muted" data-lang="ai_analyzing_sub">Detecting anomalies and patterns using our neural network.</p>
+                        
+                        <div class="progress mt-4 mx-auto" style="height: 10px; max-width: 400px; border-radius: 5px;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%" id="analysisProgress"></div>
+                        </div>
+                    </div>
+
+                    <!-- Results Area -->
+                    <div id="resultArea" class="mt-5 d-none pt-4 border-top">
+                        <div class="text-center mb-5">
+                            <h2 class="fw-bold" data-lang="diag_result_title">Analysis Results</h2>
+                        </div>
+                        
+                        <div class="row g-4">
+                            <!-- Left: Confidence Gauge -->
+                            <div class="col-md-4 text-center">
+                                <div class="result-gauge-box p-4 bg-light rounded-4 border">
+                                    <div class="confidence-ring mb-3">
+                                        <svg viewBox="0 0 36 36" class="circular-chart">
+                                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                            <path class="circle" id="confidenceStroke" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                            <text x="18" y="20.35" class="percentage" id="confidenceLevel">0%</text>
+                                        </svg>
+                                    </div>
+                                    <h6 class="fw-bold text-uppercase mb-0 tracking-wider small" data-lang="hw_confidence">Confidence Score</h6>
+                                </div>
+                            </div>
+
+                            <!-- Right: Detailed Findings -->
+                            <div class="col-md-8">
+                                <div class="finding-details h-100 p-4 bg-white border rounded-4 shadow-sm">
+                                    <div class="d-flex justify-content-between align-items-start mb-3">
+                                        <div>
+                                            <span class="badge bg-soft-success text-success mb-2 px-3 py-2" id="resultBadge" data-lang="detection_success">Detection Successful</span>
+                                            <h3 class="fw-bold mb-1" id="detectedCondition">...</h3>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="medicalExplanation" class="mb-4"></div>
+                                    
+                                    <div class="d-flex flex-wrap gap-4 align-items-center mt-auto border-top pt-4">
+                                        <div>
+                                            <p class="text-muted small mb-1" data-lang="recommended">Recommended Action</p>
+                                            <p class="fw-bold mb-0 text-primary fs-5" id="recommendedSpecialist"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- NEW: Suggested Doctors Section -->
+                        <div id="suggestedDoctorsSection" class="mt-5 d-none">
+                            <div class="d-flex align-items-center gap-3 mb-4">
+                                <div class="bg-primary-subtle p-2 rounded-3 text-primary">
+                                    <i class="bi bi-people-fill fs-4"></i>
+                                </div>
+                                <h4 class="fw-bold mb-0 text-dark" data-lang="suggested_docs_title">Recommended Specialists</h4>
+                            </div>
+                            <div class="row g-3" id="suggestedDoctorsRow">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                        
+                        <!-- Disclaimer -->
+                        <div class="alert alert-warning border-0 p-3 mt-5 rounded-4 bg-soft-warning text-dark small" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <span data-lang="footer_disclaimer">Notice: This diagnosis is generated by an AI model as a preliminary check. It should NOT be considered a final medical diagnosis. Always consult a qualified physician.</span>
+                        </div>
+                        
+                        <!-- Actions -->
+                        <div class="text-center mt-4 pb-4">
+                            <button type="button" class="btn btn-primary rounded-pill px-5 py-2 fw-bold mb-2 shadow-sm" onclick="generateMedicalReport()">
+                                <i class="bi bi-file-medical me-1"></i>
+                                <span data-lang="create_pdf_report">General Medical Report (PDF)</span>
+                            </button>
+                            <br>
+                            <button type="button" class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold" onclick="resetFullScan()">
+                                <i class="bi bi-arrow-clockwise me-1"></i>
+                                <span data-lang="btn_new_scan">Perform Another Scan</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dedicated Professional Medical Report (Print Only) -->
+    <div id="medicalPrintReport" class="d-none">
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- PAGE 1: Patient Info + Diagnostic Findings         -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="print-page page-1">
+
+            <!-- ── PROFESSIONAL LETTERHEAD ── -->
+            <div class="rpt-letterhead">
+                <div class="rpt-lh-left">
+                    <div class="rpt-logo-container">
+                        <div class="rpt-logo-circle">
+                            <i class="fa-solid fa-heart-pulse text-white fs-4"></i>
+                        </div>
+                        <div>
+                            <div class="rpt-brand" data-lang="report_brand">Smart Care 360</div>
+                            <div class="rpt-dept" data-lang="report_dept">Advanced Medical Diagnostics</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rpt-lh-right">
+                    <div class="rpt-report-title" data-lang="report_title">MEDICAL REPORT</div>
+                    <div class="rpt-meta-info">
+                        <div><span data-lang="report_date">Date:</span> <span id="reportDate"></span></div>
+                        <div><span data-lang="report_ref">Ref:</span> <strong>MAI-<span id="reportRefId"></span></strong></div>
+                    </div>
+                </div>
+            </div>
+            <div class="rpt-letterhead-bar"></div>
+
+            <!-- ── SECTION TITLE: Patient Information ── -->
+            <div class="rpt-section-title" data-lang="report_patient_details">Patient Information</div>
+
+            <!-- ── PATIENT DETAILS TABLE ── -->
+            <table class="rpt-patient-table">
+                <tr>
+                    <td style="width: 50%;">
+                        <div class="rpt-field-label" data-lang="report_name">Full Name</div>
+                        <div class="rpt-field-value" id="reportPatientName">—</div>
+                    </td>
+                    <td style="width: 50%;">
+                        <div class="rpt-field-label" data-lang="report_exam">Examination Type</div>
+                        <div class="rpt-field-value" id="reportScanType">—</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="rpt-field-label" data-lang="report_email">Email Address</div>
+                        <div class="rpt-field-value" id="reportPatientEmail">—</div>
+                    </td>
+                    <td>
+                        <div class="rpt-field-label" data-lang="report_age">Age</div>
+                        <div class="rpt-field-value" id="reportPatientAge">—</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="rpt-field-label" data-lang="report_phone">Phone</div>
+                        <div class="rpt-field-value" id="reportPatientPhone">—</div>
+                    </td>
+                    <td>
+                        <div class="rpt-field-label" data-lang="report_gender">Gender</div>
+                        <div class="rpt-field-value" id="reportPatientGender">—</div>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- ── SECTION TITLE: AI Diagnostic Findings ── -->
+            <div class="rpt-section-title" data-lang="report_findings">AI Diagnostic Findings</div>
+
+            <!-- ── FINDINGS TABLE ── -->
+            <table class="rpt-findings-table">
+                <tr>
+                    <td id="reportScanImageContainer" class="rpt-scan-image-cell" style="width: 38%;">
+                        <img id="reportScanImage" src="" alt="Medical Scan" class="rpt-scan-img">
+                    </td>
+                    <td id="reportFindingsTextContainer" class="rpt-findings-text-cell" style="width: 62%;">
+                        <div class="rpt-detection-label" data-lang="report_detection">Detection Result</div>
+                        <div class="rpt-detection-title" id="reportResultTitle">—</div>
+                        <div class="rpt-detection-desc" id="reportResultDesc">—</div>
+
+                        <div class="rpt-findings-stats">
+                            <div class="rpt-stat-box rpt-stat-green">
+                                <div class="rpt-stat-label" data-lang="report_confidence">AI Confidence</div>
+                                <div class="rpt-stat-value" id="reportConfidence">—</div>
+                            </div>
+                            <div class="rpt-stat-box rpt-stat-red">
+                                <div class="rpt-stat-label" data-lang="report_recommendation">Recommended Action</div>
+                                <div class="rpt-stat-value rpt-stat-value-sm" id="reportRecommendation">—</div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- ── SPACER ── -->
+            <div style="flex:1;"></div>
+
+            <!-- ── FOOTER / SIGNATURES ── -->
+            <div class="rpt-footer">
+                <div class="rpt-sig-block">
+                    <div class="rpt-sig-line"></div>
+                    <div class="rpt-sig-label" data-lang="report_consultant">Consultant / Doctor</div>
+                </div>
+                <div class="rpt-footer-stamp">
+                    <div class="rpt-stamp-circle">✓</div>
+                    <div class="rpt-stamp-text" data-lang="report_ai_verified">AI Verified</div>
+                </div>
+                <div class="rpt-sig-block">
+                    <div class="rpt-sig-line"></div>
+                    <div class="rpt-sig-label" data-lang="report_system_sig">AI System Verified</div>
+                </div>
+            </div>
+
+            <!-- ── PAGE NUMBER ── -->
+            <div class="rpt-page-num"><span data-lang="report_page">Page</span> 1 / 2</div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- PAGE 2: Detailed Technical Analysis                -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <div class="print-page page-2">
+
+            <!-- ── COMPACT LETTERHEAD ── -->
+            <div class="rpt-letterhead rpt-letterhead-compact">
+                <div class="rpt-lh-left">
+                    <div class="rpt-logo-container">
+                        <div class="rpt-logo-circle rpt-logo-sm">
+                            <i class="fa-solid fa-heart-pulse text-white fs-6"></i>
+                        </div>
+                        <div>
+                            <div class="rpt-brand rpt-brand-sm" data-lang="report_brand">Smart Care 360</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rpt-lh-right">
+                    <div class="rpt-meta-info" style="font-size:10px;">
+                        <span data-lang="report_detailed_title">Detailed Medical Report</span> &nbsp;|&nbsp; <span data-lang="report_ref">Ref:</span> <strong>MAI-<span id="reportRefId2"></span></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="rpt-letterhead-bar rpt-letterhead-bar-compact"></div>
+
+            <!-- ── SECTION TITLE ── -->
+            <div class="rpt-section-title" data-lang="report_detailed_title">Detailed Medical Report</div>
+
+            <!-- ── DETAILED DYNAMICALLY POPULATED CONTENT ── -->
+            <div class="rpt-details-container">
+                <!-- Text Details Column -->
+                <div class="rpt-details-text">
+                    <!-- Tech Stats Grid -->
+                    <div class="rpt-tech-grid">
+                        <div class="rpt-tech-box" id="rptBoneNameBox">
+                            <div class="rpt-tech-label" data-lang="report_affected_bone">Affected Bone</div>
+                            <div class="rpt-tech-value"><i class="fa-solid fa-bone text-primary me-2"></i><span id="rptBoneName">—</span></div>
+                        </div>
+                        <div class="rpt-tech-box" id="rptFractureTypeBox">
+                            <div class="rpt-tech-label" data-lang="report_fracture_type">Fracture Type</div>
+                            <div class="rpt-tech-value"><i class="fa-solid fa-bolt text-warning me-2"></i><span id="rptFractureType">—</span></div>
+                        </div>
+                        <div class="rpt-tech-box rpt-span-2" id="rptSeverityBox">
+                            <div class="rpt-tech-label" data-lang="report_severity">Severity</div>
+                            <div class="rpt-tech-value"><span class="rpt-severity-dot" id="rptSeverityDot"></span><span id="rptSeverity">—</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Tech Description -->
+                    <div class="rpt-tech-section" id="rptMedicalReportBox">
+                        <div class="rpt-tech-section-title" data-lang="report_tech_desc">Technical Medical Description</div>
+                        <p class="rpt-tech-section-text" id="rptMedicalReport">—</p>
+                    </div>
+
+                    <!-- Suggested Treatment -->
+                    <div class="rpt-tech-section rpt-treatment-section" id="rptTreatmentPlanBox">
+                        <div class="rpt-tech-section-title text-success" data-lang="report_treatment">Suggested Treatment Plan & Recommendations</div>
+                        <p class="rpt-tech-section-text text-success-dark" id="rptTreatmentPlan">—</p>
+                    </div>
+                </div>
+
+                <!-- Heatmap visualization -->
+                <div class="rpt-details-heatmap" id="rptHeatmapBox">
+                    <div class="rpt-heatmap-card">
+                        <div class="rpt-heatmap-label" data-lang="report_heatmap">Location of Injury Heatmap Visualization (Grad-CAM)</div>
+                        <div class="rpt-heatmap-img-frame">
+                            <img id="rptHeatmapImage" src="" alt="Grad-CAM Heatmap">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── SPACER ── -->
+            <div style="flex:1;"></div>
+
+            <!-- ── FOOTER / SIGNATURES ── -->
+            <div class="rpt-footer">
+                <div class="rpt-sig-block">
+                    <div class="rpt-sig-line"></div>
+                    <div class="rpt-sig-label" data-lang="report_consultant">Consultant / Doctor</div>
+                </div>
+                <div class="rpt-footer-stamp">
+                    <div class="rpt-stamp-circle">✓</div>
+                    <div class="rpt-stamp-text" data-lang="report_ai_verified">AI Verified</div>
+                </div>
+                <div class="rpt-sig-block">
+                    <div class="rpt-sig-line"></div>
+                    <div class="rpt-sig-label" data-lang="report_system_sig">AI System Verified</div>
+                </div>
+            </div>
+
+            <!-- ── DISCLAIMER ── -->
+            <div class="rpt-disclaimer" data-lang="report_disclaimer">This report was automatically generated by Smart Care 360 AI System. It serves as preliminary diagnostic support and must be reviewed by a certified medical professional before any clinical decision.</div>
+
+            <!-- ── PAGE NUMBER ── -->
+            <div class="rpt-page-num"><span data-lang="report_page">Page</span> 2 / 2</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- JS Dependencies -->
+    <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../shared/lang.js"></script>
+    <script src="../shared/alert.js"></script>
+    <script src="../shared/api.js"></script>
+    <script src="diagnosis.js?v=6"></script>
+    <script src="../shared/dark-mode.js"></script>
+    <script src="../shared/navbar.js"></script>
+    <script src="../shared/footer.js"></script>
+</body>
+</html>
+
+

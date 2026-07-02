@@ -5,7 +5,7 @@
 
 const Api = {
     // 🔹 عند الرفع على السيرفر (Deployment):
-    baseUrl: 'https://hazemmohamedf-001-site1.etempurl.com/api',
+    baseUrl: 'https://smartcare360.runasp.net/api',
     aiBaseUrl: 'https://smartcare360-ai-production.up.railway.app',
 
     // Helper for fetch with auth

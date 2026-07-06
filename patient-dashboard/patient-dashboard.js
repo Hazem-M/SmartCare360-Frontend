@@ -19,7 +19,9 @@ translations.en = Object.assign(translations.en, {
     "dash_btn_new_diag": "Scan Now",
     "lbl_result": "Result",
     "dash_notifications": "Notifications",
+    "dash_notifications": "Notifications",
     "quick_actions": "Quick Actions",
+    "dash_browse_docs": "Browse Doctors",
     "view_all": "View All",
     "join_chat": "Join Chat",
     "cancel_appt": "Cancel",
@@ -87,7 +89,9 @@ translations.ar = Object.assign(translations.ar, {
     "dash_btn_new_diag": "افحص الآن",
     "lbl_result": "النتيجة",
     "dash_notifications": "التنبيهات",
+    "dash_notifications": "التنبيهات",
     "quick_actions": "إجراءات سريعة",
+    "dash_browse_docs": "تصفح الأطباء",
     "view_all": "عرض الكل",
     "join_chat": "انضم للمحادثة",
     "cancel_appt": "إلغاء",
@@ -277,10 +281,23 @@ async function loadDashboard() {
 
         const healthEl    = document.querySelector('[data-lang="dash_stat_health"]')?.previousElementSibling;
         const healthBadge = healthEl?.previousElementSibling?.querySelector('.badge');
-        if (healthEl)    healthEl.textContent  = stats.healthStatus || 'Stable';
+        
+        let healthLabel = stats.healthStatus || 'Stable';
+        let badgeLabel = stats.healthStatus === 'Healthy' ? 'Great' : (stats.healthStatus || 'Stable');
+        
+        if (lang === 'ar') {
+            if (healthLabel === 'Healthy') healthLabel = 'ممتازة';
+            else if (healthLabel === 'Stable') healthLabel = 'مستقر';
+            else if (healthLabel === 'Critical') healthLabel = 'حرج';
+            
+            if (badgeLabel === 'Great') badgeLabel = 'ممتاز';
+            else if (badgeLabel === 'Stable') badgeLabel = 'مستقر';
+        }
+        
+        if (healthEl)    healthEl.textContent  = healthLabel;
         if (healthBadge) {
             healthBadge.className = `badge bg-soft-${stats.healthColor || 'success'} text-${stats.healthColor || 'success'}`;
-            healthBadge.textContent = stats.healthStatus === 'Healthy' ? 'Great' : (stats.healthStatus || 'Stable');
+            healthBadge.textContent = badgeLabel;
         }
     } catch (e) { console.warn('Dashboard stats error:', e); }
 
@@ -294,13 +311,21 @@ async function loadDashboard() {
                 notifications.forEach(n => {
                     const icon       = n.type === 'Warning' ? 'exclamation-triangle' : 'info-circle';
                     const colorClass = n.type === 'Warning' ? 'warning' : 'primary';
+                    
+                    let title = n.title;
+                    let message = n.message;
+                    if (lang === 'ar') {
+                        if (title.includes('Welcome to')) title = 'مرحباً بك في سمارت كير 360!';
+                        if (message.includes('verified and ready')) message = 'حسابك الآن موثق وجاهز. ابدأ برفع فحص طبي.';
+                    }
+                    
                     notifContainer.innerHTML += `
                         <div class="notification-item glass-card p-3 mb-3 border-start border-${colorClass} border-4 ${n.isRead ? 'opacity-75' : ''}">
                             <div class="d-flex gap-3">
                                 <div class="notif-icon text-${colorClass}"><i class="bi bi-${icon}"></i></div>
                                 <div class="flex-grow-1">
-                                    <p class="mb-1 small fw-bold">${n.title}</p>
-                                    <p class="text-muted extra-small mb-0">${n.message}</p>
+                                    <p class="mb-1 small fw-bold">${title}</p>
+                                    <p class="text-muted extra-small mb-0">${message}</p>
                                 </div>
                             </div>
                         </div>

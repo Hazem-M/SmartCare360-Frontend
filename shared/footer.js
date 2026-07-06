@@ -10,7 +10,7 @@
             resources: "Resources",
             contact: "Contact Us",
             address: "Beni Suef, Egypt",
-            phone: "01022898626",
+            phone: "+201228595509",
             copyright: "© 2026 Smart Care 360. All rights reserved.",
             disclaimer: "Notice: Preliminary digital scan analysis only. Always consult a doctor.",
             brand: "Smart Care 360",
@@ -28,7 +28,7 @@
             resources: "المصادر",
             contact: "تواصل معنا",
             address: "بني سويف، مصر",
-            phone: "+20 102 289 8626",
+            phone: "+201228595509",
             copyright: "© 2026 سمارت كير 360. جميع الحقوق محفوظة.",
             disclaimer: "ملاحظة: هذا فحص رقمي أولي فقط. يُرجى دائماً استشارة طبيب.",
             brand: "سمارت كير 360",
@@ -56,7 +56,7 @@
             <div class="row g-4 mb-3">
                 <div class="col-lg-4 pe-lg-5">
                     <div class="footer-brand mb-3 d-flex align-items-center gap-2">
-                        <img src="../assets/img/logo.png" alt="Smart Care 360 Logo" style="height: 45px; width: auto; object-fit: contain;">
+                        <img src="../assets/img/logo-light.png" alt="Smart Care 360 Logo" style="height: 45px; width: auto; object-fit: contain;">
                         <span class="fs-4 fw-bold">${d.brand}</span>
                     </div>
                     <p class="footer-tagline mb-4">
@@ -97,7 +97,7 @@
                     </div>
                     <div class="d-flex align-items-center gap-3 mb-3">
                         <div class="text-primary"><i class="bi bi-envelope-paper-fill fs-5"></i></div>
-                        <p class="mb-0 text-white-50 small">support@smartcare360.com</p>
+                        <p class="mb-0 text-white-50 small">mohamedhazem174@gmail.com</p>
                     </div>
                     <div class="d-flex align-items-center gap-3">
                         <div class="text-primary"><i class="bi bi-telephone-fill fs-5"></i></div>

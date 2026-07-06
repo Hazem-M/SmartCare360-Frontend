@@ -132,7 +132,7 @@
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1 mt-3 mt-lg-0">
         ${navLinks}
       </ul>
-      <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0 pb-3 pb-lg-0 flex-wrap">
+      <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0 pb-3 pb-lg-0 flex-wrap flex-lg-nowrap">
         <button class="dark-mode-btn" onclick="toggleDarkMode()" title="Toggle Dark Mode" id="darkModeBtn">
           <i class="bi bi-moon-fill" style="font-size:0.95rem;"></i>
         </button>

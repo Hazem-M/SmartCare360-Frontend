@@ -271,7 +271,7 @@ async function loadDashboard() {
 
     // ── Patient name ──────────────────────────────────────────
     const userName = localStorage.getItem('mediai_user_name') || 'Patient';
-    document.getElementById('dashPatientName').textContent = userName;
+    document.getElementById('dashPatientName').textContent = window.localizeName ? window.localizeName(userName) : userName;
 
     // ── Stats from API ─────────────────────────────────────────
     try {

@@ -137,6 +137,35 @@ function setLanguage(lang) {
     document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang } }));
 }
 
+// Dictionary for magical demo name translations
+const demoNameTranslations = {
+    "Hazem Mohamed": "حازم محمد",
+    "hazem mohamed": "حازم محمد",
+    // Can add more names here if needed
+};
+
+window.localizeName = function(name) {
+    if (!name) return name;
+    const lang = localStorage.getItem('mediai_lang') || 'en';
+    
+    if (lang === 'ar') {
+        // Find if name matches ignoring case
+        for (const [enName, arName] of Object.entries(demoNameTranslations)) {
+            if (name.toLowerCase() === enName.toLowerCase()) {
+                return arName;
+            }
+        }
+    } else {
+        // If English, translate back if it's stored in Arabic
+        for (const [enName, arName] of Object.entries(demoNameTranslations)) {
+            if (name === arName) {
+                return enName; // Assuming original casing is fine
+            }
+        }
+    }
+    return name;
+};
+
 function initLanguage() {
     const savedLang = localStorage.getItem('mediai_lang') || 'en';
     setLanguage(savedLang);
@@ -199,6 +228,13 @@ const doctorNameMap = {
 
 function translateDoctorName(name, lang) {
     if (!name) return '';
+    
+    // First check our global demo names mapping
+    if (window.localizeName) {
+        const localized = window.localizeName(name);
+        if (localized !== name) return localized;
+    }
+    
     if (lang === 'ar') return name;
     const stripped = name.replace(/^د\.\s*/u, '').replace(/^Dr\.\s*/i, '').trim();
     const translated = doctorNameMap[stripped];
